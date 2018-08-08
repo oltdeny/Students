@@ -15,7 +15,7 @@
                 <div>{{$group->id}}</div>
             </td>
             <td class="table-text">
-                <div>{{$group->name}}</div>
+                <div><a href="{{url('groups/'.$group->id)}}">{{$group->name}}</a></div>
             </td>
             <td class="table-text">
                 <div>{{$group->description}}</div>

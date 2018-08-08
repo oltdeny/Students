@@ -2,9 +2,8 @@
 @section('content')
     <table class="table table-bordered">
         <thead>
-        Students:
+        Students of group: {{$groupName}}
         <th>Id</th>
-        <th>Group</th>
         <th>Surname</th>
         <th>Name</th>
         <th>Patronymic</th>
@@ -15,9 +14,6 @@
             <tr>
                 <td class="table-text">
                     <div>{{$student->id}}</div>
-                </td>
-                <td class="table-text">
-                    <div>{{\App\Group::find($student->group_id)->name}}</div>
                 </td>
                 <td class="table-text">
                     <div>{{$student->surname}}</div>

@@ -15,7 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/groups', 'GroupController');
-Route::get('/students', 'StudentController');
-Route::get('/subjects', 'SubjectController');
+Route::resource('groups', 'GroupController');
+
+//Route::get('/groups', 'GroupController');
+//Route::get('/students', 'StudentController');
+//Route::get('/subjects', 'SubjectController');
 //Route::get('/marks', 'MarkController');
