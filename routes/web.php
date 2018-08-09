@@ -11,14 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::view('/', 'welcome');
 Route::resource('groups', 'GroupController');
 Route::resource('students', 'StudentController');
-
-//Route::get('/groups', 'GroupController');
-//Route::get('/students', 'StudentController');
-//Route::get('/subjects', 'SubjectController');
-//Route::get('/marks', 'MarkController');

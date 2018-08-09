@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use App\Models\Mark;
 use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -21,7 +22,7 @@ class GroupController extends Controller
 
     public function create()
     {
-        //
+
     }
 
 
@@ -33,16 +34,9 @@ class GroupController extends Controller
 
     public function show(Group $group)
     {
-        $students = Student::where('group_id', $group->id)->get();
-        $groups = [$group];
-        $marks = [];
-        foreach ($students as $student){
-            $marks[] = Mark::where('student_id', $student->id)->get();
-        }
-        return view('students', [
-            'groups' => $groups,
-            'students' => $students,
-            'marks' => $marks
+        $group->load('students.marks.subject');
+        return view('students/show_students', [
+            'group' => $group,
         ]);
     }
 

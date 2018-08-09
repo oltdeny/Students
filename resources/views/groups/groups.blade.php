@@ -15,7 +15,7 @@
                 <div>{{$group->id}}</div>
             </td>
             <td class="table-text">
-                <div><a href="{{url('groups/'.$group->id)}}">{{$group->name}}</a></div>
+                <div><a href="{{route('groups.show', $group)}}">{{$group->name}}</a></div>
             </td>
             <td class="table-text">
                 <div>{{$group->description}}</div>
@@ -23,4 +23,7 @@
             </tr>
         @endforeach
     </table>
+    <form action="{{route('groups.create')}}">
+
+    </form>
 @endsection

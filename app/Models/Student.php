@@ -11,4 +11,8 @@ class Student extends Model
         return $this->belongsTo(Group::class);
     }
 
+    public function marks()
+    {
+        return $this->hasMany(Mark::class);
+    }
 }

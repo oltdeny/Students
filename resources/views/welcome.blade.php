@@ -87,7 +87,6 @@
                 </div>
                 <div class="links">
                     <a href="{{url('/groups')}}">Groups</a>
-                    <a href="{{url('/students')}}">Students</a>
                     <a href="{{url('/subjects')}}">Subjects</a>
                     <a href="{{url('/marks')}}">Marks</a>
                 </div>
