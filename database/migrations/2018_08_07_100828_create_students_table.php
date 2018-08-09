@@ -15,12 +15,12 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->integer('id')->autoIncrement();
-            $table->integer('group_id');
-            $table->text('surname');
-            $table->text('name');
-            $table->text('patronymic');
-            $table->foreign('group_id')->references('id')->on('groups');
+            $table->increments('id');
+            $table->integer('group_id')->unsigned();
+            $table->string('surname');
+            $table->string('name');
+            $table->string('patronymic');
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
             $table->timestamps();
         });
     }

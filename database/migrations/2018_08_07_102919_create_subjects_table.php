@@ -15,8 +15,8 @@ class CreateSubjectsTable extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->integer('id')->autoIncrement();
-            $table->text('name');
+            $table->increments('id');
+            $table->string('name');
             $table->timestamps();
         });
     }

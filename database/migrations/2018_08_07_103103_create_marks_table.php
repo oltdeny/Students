@@ -15,11 +15,11 @@ class CreateMarksTable extends Migration
     {
         Schema::create('marks', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->integer('student_id');
-            $table->integer('subject_id');
-            $table->foreign('student_id')->references('id')->on('students');
-            $table->foreign('subject_id')->references('id')->on('subjects');
-            $table->integer('mark');
+            $table->integer('student_id')->unsigned();
+            $table->integer('subject_id')->unsigned();
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
+            $table->tinyInteger('mark');
             $table->timestamps();
         });
     }
