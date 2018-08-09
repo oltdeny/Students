@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Route::resource('groups', 'GroupController');
+Route::resource('students', 'StudentController');
 
 //Route::get('/groups', 'GroupController');
 //Route::get('/students', 'StudentController');
