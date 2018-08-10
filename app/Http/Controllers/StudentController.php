@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -12,7 +13,7 @@ class StudentController extends Controller
     public function index()
     {
         $groups = Group::all();
-        $studentsOfGroup= [];
+        $studentsOfGroup = [];
         foreach ($groups as $group) {
             $studentsOfGroup[] = Student::where('group_id', $group->id)->get();
         }
@@ -22,69 +23,50 @@ class StudentController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Student $student
-     * @return \Illuminate\Http\Response
-     */
     public function show(Student $student)
     {
-        //
+        $student->load([
+            'marks' => function ($query) {
+                $query->orderBy('subject_id', 'asc');
+            },
+            'group',
+            'marks.subject'
+        ]);
+        $subjects = Subject::all();
+        return view('students/students', [
+            'student' => $student,
+            'subjects' => $subjects
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Student $student
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Student $student)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\Student $student
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Student $student)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Student $student
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Student $student)
     {
-        //
+        try {
+            $student->delete();
+        } catch (\Exception $e) {
+            report($e);
+        }
+        return back();
     }
 }

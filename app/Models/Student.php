@@ -15,4 +15,11 @@ class Student extends Model
     {
         return $this->hasMany(Mark::class);
     }
+
+    public function findAverageRating()
+    {
+        $subjects = Subject::all();
+        $marks = $this->marks;
+        $AverageRating = $marks->where('subject_id', 1)->avg('mark');
+    }
 }
