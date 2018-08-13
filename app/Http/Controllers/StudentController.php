@@ -25,7 +25,7 @@ class StudentController extends Controller
 
     public function create(Group $group)
     {
-        return view('groups/students/create_student', ['group' => $group]);
+        return view('groups/students/create', ['group' => $group]);
     }
 
 
@@ -57,7 +57,7 @@ class StudentController extends Controller
             'marks.subject'
         ]);
         $subjects = Subject::all();
-        return view('groups/students/show_student', [
+        return view('groups/students/show', [
             'student' => $student,
             'subjects' => $subjects,
             'group' => $group
@@ -66,7 +66,7 @@ class StudentController extends Controller
 
     public function edit(Group $group, Student $student)
     {
-        return view('groups/students/edit_student', [
+        return view('groups/students/edit', [
             'group' => $group,
             'student' => $student
         ]);

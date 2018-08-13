@@ -23,7 +23,7 @@ class GroupController extends Controller
 
     public function create()
     {
-        return view('groups/create_group');
+        return view('groups/create');
     }
 
 
@@ -46,7 +46,7 @@ class GroupController extends Controller
     {
         $group->load('students.marks.subject');
         $subjects = Subject::all();
-        return view('groups/show_group', [
+        return view('groups/show', [
             'group' => $group,
             'subjects' => $subjects
         ]);
@@ -55,7 +55,7 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
-        return view('groups/edit_group', [
+        return view('groups/edit', [
             'group' => $group
         ]);
     }
@@ -68,10 +68,7 @@ class GroupController extends Controller
             'description' => 'required|max:255',
         ]);
 
-        $group->update([
-            'name' => $request->name,
-            'description' => $request->description
-        ]);
+        $group->update($request->all());
         return redirect('groups');
     }
 
