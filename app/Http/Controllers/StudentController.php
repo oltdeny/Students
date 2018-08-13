@@ -25,11 +25,11 @@ class StudentController extends Controller
 
     public function create(Group $group)
     {
-        return view('students/create_student', ['group' => $group]);
+        return view('groups/students/create_student', ['group' => $group]);
     }
 
 
-    public function store(Request $request)
+    public function store(Request $request, Group $group)
     {
         $this->validate($request, [
             'name' => 'required|max:30|',
@@ -41,13 +41,13 @@ class StudentController extends Controller
             'name' => $request->name,
             'surname' => $request->surname,
             'patronymic' => $request->patronymic,
-            'group_id' => $request->group,
+            'group_id' => $group->id,
 
         ]);
-        return redirect('groups/' . $request->group);
+        return redirect('groups/' . $group->id);
     }
 
-    public function show(Student $student)
+    public function show(Group $group, Student $student)
     {
         $student->load([
             'marks' => function ($query) {
@@ -57,29 +57,40 @@ class StudentController extends Controller
             'marks.subject'
         ]);
         $subjects = Subject::all();
-        return view('students/students', [
+        return view('groups/students/show_student', [
             'student' => $student,
-            'subjects' => $subjects
+            'subjects' => $subjects,
+            'group' => $group
         ]);
     }
 
-    public function edit(Student $student)
+    public function edit(Group $group, Student $student)
     {
-        //
+        return view('groups/students/edit_student', [
+            'group' => $group,
+            'student' => $student
+        ]);
     }
 
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Group $group, Student $student)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|max:30',
+            'surname' => 'required|max:30',
+            'patronymic' => 'required|max:30',
+        ]);
+
+        $student->update([
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'patronymic' => $request->patronymic,
+        ]);
+        return redirect('groups/'.$group->id.'/students/'.$student->id);
     }
 
-    public function destroy(Student $student)
+    public function destroy(Group $group, Student $student)
     {
-        try {
-            $student->delete();
-        } catch (\Exception $e) {
-            report($e);
-        }
-        return back();
+        $student->delete();
+        return redirect('groups/'.$group->id);
     }
 }

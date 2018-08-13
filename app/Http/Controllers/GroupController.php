@@ -46,7 +46,7 @@ class GroupController extends Controller
     {
         $group->load('students.marks.subject');
         $subjects = Subject::all();
-        return view('groups/show_students', [
+        return view('groups/show_group', [
             'group' => $group,
             'subjects' => $subjects
         ]);

@@ -23,18 +23,7 @@
                 <div>{{$group->id}}</div>
             </td>
             <td class="table-text">
-                <div style="display: inline-block"><a href="{{route('groups.show', $group)}}">{{$group->name}}</a></div>
-                <div style="display: inline-block">
-                    <form action="{{route('groups.destroy', $group)}}" method="post">
-                        {{csrf_field()}}
-                        {{method_field('DELETE')}}
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
-                    <form action="{{route('groups.edit', $group)}}" method="get">
-                        {{csrf_field()}}
-                        <button class="btn btn-info">Edit</button>
-                    </form>
-                </div>
+                <div><a href="{{route('groups.show', $group)}}">{{$group->name}}</a></div>
             </td>
             <td class="table-text">
                 <div>{{$group->description}}</div>

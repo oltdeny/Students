@@ -86,9 +86,7 @@
                     You can see:
                 </div>
                 <div class="links">
-                    <a href="{{url('/groups')}}">Groups</a>
-                    <a href="{{url('/subjects')}}">Subjects</a>
-                    <a href="{{url('/marks')}}">Marks</a>
+                    <a href="{{route('groups.index')}}">Groups</a>
                 </div>
             </div>
         </div>
