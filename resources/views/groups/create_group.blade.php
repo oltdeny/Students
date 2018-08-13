@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @include('errors')
-<form action="{{route('groups.store')}}" method="post">
+<form action="{{route('students.store')}}" method="post">
     {{csrf_field()}}
     <label for="name" class="col-sm-3 control-label">Group name</label>
     <div class="col-sm-6">

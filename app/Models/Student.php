@@ -22,4 +22,12 @@ class Student extends Model
         $marks = $this->marks;
         $AverageRating = $marks->where('subject_id', 1)->avg('mark');
     }
+
+    protected $fillable = [
+        'name',
+        'surname',
+        'patronymic',
+        'group_id'
+    ];
+
 }

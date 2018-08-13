@@ -23,15 +23,28 @@ class StudentController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Group $group)
     {
-
+        return view('students/create_student', ['group' => $group]);
     }
 
 
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|max:30|',
+            'surname' => 'required|max:30',
+            'patronymic' => 'required|max:30'
+        ]);
+        $student = new Student();
+        $student->create([
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'patronymic' => $request->patronymic,
+            'group_id' => $request->group,
+
+        ]);
+        return redirect('groups/' . $request->group);
     }
 
     public function show(Student $student)

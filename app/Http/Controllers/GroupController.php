@@ -20,6 +20,7 @@ class GroupController extends Controller
     }
 
 
+
     public function create()
     {
         return view('groups/create_group');
@@ -32,11 +33,10 @@ class GroupController extends Controller
             'name' => 'required|max:30|unique:groups',
             'description' => 'required|max:255',
         ]);
-
         $group = new Group();
         $group->create([
-            'name'=>$request->name,
-            'description'=>$request->description
+            'name' => $request->name,
+            'description' => $request->description
         ]);
         return redirect('groups');
     }
@@ -56,7 +56,7 @@ class GroupController extends Controller
     public function edit(Group $group)
     {
         return view('groups/edit_group', [
-            'group'=>$group
+            'group' => $group
         ]);
     }
 
@@ -64,13 +64,13 @@ class GroupController extends Controller
     public function update(Request $request, Group $group)
     {
         $this->validate($request, [
-            'name' => 'required|max:30|unique:groups,name,'.$group->id,
+            'name' => 'required|max:30|unique:groups,name,' . $group->id,
             'description' => 'required|max:255',
         ]);
 
         $group->update([
-            'name'=>$request->name,
-            'description'=>$request->description
+            'name' => $request->name,
+            'description' => $request->description
         ]);
         return redirect('groups');
     }
