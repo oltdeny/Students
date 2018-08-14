@@ -6,20 +6,41 @@ use App\Models\Group;
 use App\Models\Mark;
 use App\Models\Student;
 use App\Models\Subject;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use function PHPSTORM_META\type;
+use Psy\Util\Str;
 
 class GroupController extends Controller
 {
-
     public function index()
     {
         $groups = Group::all();
+        $marks = Mark::all();
+        $subjects = Subject::all();
+
+        foreach ($groups as $group) {
+            foreach ($subjects as $subject) {
+                $SubAvg[$group->id][$subject->id] = DB::table('marks')
+                    ->selectRaw('AVG(mark) as mark')
+                    ->where([['subject_id', '=', $subject->id], ['group_id', '=', $group->id]])
+                    ->get();
+            }
+            $GenAvg[$group->id] = DB::table('marks')
+                ->selectRaw('AVG(mark) as mark')
+                ->where('group_id', '=', $group->id)
+                ->get();
+        }
+
         return view('groups/groups', [
-            'groups' => $groups
+            'groups' => $groups,
+            'subjects' => $subjects,
+            'marks' => $marks,
+            'SubAvg' => $SubAvg,
+            'GenAvg' => $GenAvg
         ]);
     }
-
-
 
     public function create()
     {
@@ -34,17 +55,14 @@ class GroupController extends Controller
             'description' => 'required|max:255',
         ]);
         $group = new Group();
-        $group->create([
-            'name' => $request->name,
-            'description' => $request->description
-        ]);
+        $group->create($request->all());
         return redirect('groups');
     }
 
 
     public function show(Group $group)
     {
-        $group->load('students.marks.subject');
+        $group->load('students.marks');
         $subjects = Subject::all();
         return view('groups/show', [
             'group' => $group,
@@ -69,7 +87,7 @@ class GroupController extends Controller
         ]);
 
         $group->update($request->all());
-        return redirect('groups');
+        return redirect()->route('groups.show', $group);
     }
 
 

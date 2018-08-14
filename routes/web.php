@@ -15,3 +15,4 @@ Route::view('/', 'welcome');
 Route::resource('groups', 'GroupController');
 Route::resource('groups.students', 'StudentController');
 Route::resource('groups.students.marks', 'MarkController');
+Route::resource('subjects', 'SubjectController');

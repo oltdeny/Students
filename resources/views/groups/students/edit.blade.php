@@ -2,7 +2,7 @@
 @section('content')
     @include('errors')
     <form action="{{route('groups.students.update', [$group, $student])}}" method="post">
-        {{csrf_field()}}
+        @csrf
         {{method_field('PUT')}}
         <label for="name" class="col-sm-3 control-label">Name</label>
         <div class="col-sm-6">

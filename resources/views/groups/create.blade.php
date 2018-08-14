@@ -2,7 +2,7 @@
 @section('content')
     @include('errors')
 <form action="{{route('groups.store')}}" method="post">
-    {{csrf_field()}}
+    @csrf
     <label for="name" class="col-sm-3 control-label">Group name</label>
     <div class="col-sm-6">
         <input type="text" name="name" id="name" class="form-control">

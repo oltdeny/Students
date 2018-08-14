@@ -88,6 +88,9 @@
                 <div class="links">
                     <a href="{{route('groups.index')}}">Groups</a>
                 </div>
+                <div class="links">
+                    <a href="{{route('subjects.index')}}">Subjects</a>
+                </div>
             </div>
         </div>
     </body>

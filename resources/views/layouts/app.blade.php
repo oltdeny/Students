@@ -9,11 +9,12 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 </head>
 <body>
-<nav>
-    <div style="display: inline-block"><a href="{{route('groups.index')}}"></a></div>
-    <div style="display: inline-block"></div>
-    <div style="display: inline-block"></div>
+<nav class="nav">
+    <div style="display: inline-block"><a href="{{url('/')}}" class="nav-link">Main</a></div>
+    <div style="display: inline-block"><a href="{{route('groups.index')}}" class="nav-link">Groups</a></div>
+    <div style="display: inline-block"><a href="{{route('subjects.index')}}" class="nav-link">Subjects</a></div>
 </nav>
+<hr>
 <div class="container">
     @yield('content')
 </div>

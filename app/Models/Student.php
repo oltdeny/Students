@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
+    protected $fillable = [
+        'name',
+        'surname',
+        'patronymic',
+        'group_id'
+    ];
+
     public function group()
     {
         return $this->belongsTo(Group::class);
@@ -15,19 +22,5 @@ class Student extends Model
     {
         return $this->hasMany(Mark::class);
     }
-
-    public function findAverageRating()
-    {
-        $subjects = Subject::all();
-        $marks = $this->marks;
-        $AverageRating = $marks->where('subject_id', 1)->avg('mark');
-    }
-
-    protected $fillable = [
-        'name',
-        'surname',
-        'patronymic',
-        'group_id'
-    ];
 
 }

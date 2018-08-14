@@ -2,22 +2,25 @@
 @section('content')
     <div style="display: inline-block">
         <form action="{{route('groups.students.marks.create', [$group, $student])}}" method="get">
-            {{csrf_field()}}
+            @csrf
             <button class="btn btn-success">Add Mark</button>
         </form>
     </div>
     <div style="display: inline-block">
         <form action="{{route('groups.students.destroy', [$group, $student])}}" method="post">
-            {{csrf_field()}}
+            @csrf
             {{method_field('DELETE')}}
             <button class="btn btn-danger">Delete current Student</button>
         </form>
     </div>
     <div style="display: inline-block">
         <form action="{{route('groups.students.edit', [$group, $student])}}" method="get">
-            {{csrf_field()}}
+            @csrf
             <button class="btn btn-info">Edit current Student</button>
         </form>
+    </div>
+    <div style="display: inline-block">
+        <a href="{{route('groups.show', $group)}}" class="btn btn-info">Back to Group</a>
     </div>
     <div>
         <table class="table table-bordered">

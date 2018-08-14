@@ -10,19 +10,6 @@ use Illuminate\Http\Request;
 class StudentController extends Controller
 {
 
-    public function index()
-    {
-        $groups = Group::all();
-        $studentsOfGroup = [];
-        foreach ($groups as $group) {
-            $studentsOfGroup[] = Student::where('group_id', $group->id)->get();
-        }
-        return view('students', [
-            'groups' => $groups,
-            'studentsOfGroup' => $studentsOfGroup
-        ]);
-    }
-
     public function create(Group $group)
     {
         return view('groups/students/create', ['group' => $group]);
@@ -44,7 +31,7 @@ class StudentController extends Controller
             'group_id' => $group->id,
 
         ]);
-        return redirect('groups/' . $group->id);
+        return redirect()->route('groups.show', $group);
     }
 
     public function show(Group $group, Student $student)
@@ -85,12 +72,12 @@ class StudentController extends Controller
             'surname' => $request->surname,
             'patronymic' => $request->patronymic,
         ]);
-        return redirect('groups/'.$group->id.'/students/'.$student->id);
+        return redirect()->route('groups.students.show');
     }
 
     public function destroy(Group $group, Student $student)
     {
         $student->delete();
-        return redirect('groups/'.$group->id);
+        return redirect()->route('groups.show', $group);
     }
 }

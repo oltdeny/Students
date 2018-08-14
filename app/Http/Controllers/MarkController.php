@@ -28,9 +28,13 @@ class MarkController extends Controller
             'mark' => 'required',
         ]);
         $mark = new Mark();
-        $mark->create($request->all());
-        $mark->fill(['student_id' => $student->id]);
-        return redirect()->route('groups.show');
+        $mark->create([
+            'group_id' => $group->id,
+            'student_id' => $student->id,
+            'subject_id' => $request->subject,
+            'mark' => $request->mark
+        ]);
+        return redirect()->route('groups.students.show', [$group, $student]);
     }
 
     public function edit(Group $group, Student $student, Mark $mark)
@@ -49,7 +53,7 @@ class MarkController extends Controller
         ]);
 
         $mark->update($request->all());
-        return redirect()->route('groups.show');
+        return redirect()->route('groups.students.show', [$group, $student]);
     }
 
 }
