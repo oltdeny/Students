@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Mark\StoreMark;
+use App\Http\Requests\Mark\UpdateMark;
 use App\Models\Group;
 use App\Models\Mark;
 use App\Models\Student;
@@ -10,7 +12,6 @@ use Illuminate\Http\Request;
 
 class MarkController extends Controller
 {
-
     public function create(Group $group, Student $student)
     {
         $subjects = Subject::all();
@@ -21,18 +22,13 @@ class MarkController extends Controller
         ]);
     }
 
-    public function store(Request $request, Group $group, Student $student)
+    public function store(StoreMark $request, Group $group, Student $student)
     {
-        $this->validate($request, [
-            'subject' => 'required',
-            'mark' => 'required',
-        ]);
         $mark = new Mark();
-        $mark->create([
+        $validated = $request->validated();
+        $mark->create($validated + [
             'group_id' => $group->id,
             'student_id' => $student->id,
-            'subject_id' => $request->subject,
-            'mark' => $request->mark
         ]);
         return redirect()->route('groups.students.show', [$group, $student]);
     }
@@ -46,14 +42,10 @@ class MarkController extends Controller
         ]);
     }
 
-    public function update(Request $request, Group $group, Student $student, Mark $mark)
+    public function update(UpdateMark $request, Group $group, Student $student, Mark $mark)
     {
-        $this->validate($request, [
-            'mark' => 'required',
-        ]);
-
-        $mark->update($request->all());
+        $validated = $request->validated();
+        $mark->update($validated);
         return redirect()->route('groups.students.show', [$group, $student]);
     }
-
 }

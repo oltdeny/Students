@@ -16,9 +16,9 @@ class CreateMarksTable extends Migration
         Schema::create('marks', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('student_id')->unsigned()->default(0);
-            $table->integer('subject_id')->unsigned()->default(0);
-            $table->integer('group_id')->unsigned()->default(0);
+            $table->integer('student_id')->unsigned();
+            $table->integer('subject_id')->unsigned();
+            $table->integer('group_id')->unsigned();
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Group\StoreGroup;
 use App\Models\Group;
 use App\Models\Mark;
 use App\Models\Student;
@@ -9,6 +10,7 @@ use App\Models\Subject;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use MongoDB\Driver\Query;
 use function PHPSTORM_META\type;
 use Psy\Util\Str;
 
@@ -17,28 +19,26 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all();
-        $marks = Mark::all();
+        $marks = (new Mark)->getTable();
         $subjects = Subject::all();
-
-        foreach ($groups as $group) {
-            foreach ($subjects as $subject) {
-                $SubAvg[$group->id][$subject->id] = DB::table('marks')
-                    ->selectRaw('AVG(mark) as mark')
-                    ->where([['subject_id', '=', $subject->id], ['group_id', '=', $group->id]])
-                    ->get();
-            }
-            $GenAvg[$group->id] = DB::table('marks')
-                ->selectRaw('AVG(mark) as mark')
-                ->where('group_id', '=', $group->id)
-                ->get();
+        $query = Group::select('groups.*');
+        foreach ($subjects as $subject) {
+            $subQuery = Mark::selectRaw("AVG({$marks}.mark) as mark")
+                ->whereRaw("{$marks}.group_id = groups.id")
+                ->where("{$marks}.subject_id", $subject->id);
+            $query->selectSub($subQuery, $subject->id);
         }
 
+        $subQueryAvg = Mark::selectRaw("AVG({$marks}.mark) as mark")
+            ->whereRaw("{$marks}.group_id = groups.id");
+        $query->selectSub($subQueryAvg, "avg");
+
+        $avgs = $query->get();
         return view('groups/groups', [
             'groups' => $groups,
             'subjects' => $subjects,
             'marks' => $marks,
-            'SubAvg' => $SubAvg,
-            'GenAvg' => $GenAvg
+            'avgs' => $avgs,
         ]);
     }
 
@@ -48,14 +48,11 @@ class GroupController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(StoreGroup $request)
     {
-        $this->validate($request, [
-            'name' => 'required|max:30|unique:groups',
-            'description' => 'required|max:255',
-        ]);
+        $validated = $request->validated();
         $group = new Group();
-        $group->create($request->all());
+        $group->create($validated);
         return redirect('groups');
     }
 
@@ -85,11 +82,9 @@ class GroupController extends Controller
             'name' => 'required|max:30|unique:groups,name,' . $group->id,
             'description' => 'required|max:255',
         ]);
-
         $group->update($request->all());
         return redirect()->route('groups.show', $group);
     }
-
 
     public function destroy(Group $group)
     {

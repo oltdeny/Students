@@ -35,12 +35,16 @@
                         @foreach($subjects as $subject)
                             <tr>
                                 <th scope="row">{{$subject->name}}:</th>
-                                <td>{{$SubAvg[$group->id][$subject->id][0]->mark}}</td>
+                                <td>
+                                    @php
+                                        echo $avgs[$loop->parent->index]->{$subject->id}
+                                    @endphp
+                                </td>
                             </tr>
                         @endforeach
                             <tr>
                                 <th scope="row">General Average:</th>
-                                <td>{{$GenAvg[$group->id][0]->mark}}</td>
+                                <td>{{$avgs[$loop->index]->avg}}</td>
                             </tr>
                     </table>
                 </td>

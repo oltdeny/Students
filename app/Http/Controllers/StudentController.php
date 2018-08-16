@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Student\StoreStudent;
 use App\Models\Group;
 use App\Models\Student;
 use App\Models\Subject;
@@ -16,21 +17,11 @@ class StudentController extends Controller
     }
 
 
-    public function store(Request $request, Group $group)
+    public function store(StoreStudent $request, Group $group)
     {
-        $this->validate($request, [
-            'name' => 'required|max:30|',
-            'surname' => 'required|max:30',
-            'patronymic' => 'required|max:30'
-        ]);
+        $validated = $request->validated();
         $student = new Student();
-        $student->create([
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'patronymic' => $request->patronymic,
-            'group_id' => $group->id,
-
-        ]);
+        $student->create($validated + ['group_id' => $group->id]);
         return redirect()->route('groups.show', $group);
     }
 
@@ -59,19 +50,10 @@ class StudentController extends Controller
         ]);
     }
 
-    public function update(Request $request, Group $group, Student $student)
+    public function update(StoreStudent $request, Group $group, Student $student)
     {
-        $this->validate($request, [
-            'name' => 'required|max:30',
-            'surname' => 'required|max:30',
-            'patronymic' => 'required|max:30',
-        ]);
-
-        $student->update([
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'patronymic' => $request->patronymic,
-        ]);
+        $validated = $request->validated();
+        $student->update($validated);
         return redirect()->route('groups.students.show');
     }
 

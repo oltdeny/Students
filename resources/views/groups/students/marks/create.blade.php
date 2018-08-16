@@ -5,9 +5,9 @@
         @csrf
         <div>
             <label for="subject" class="col-sm-3 control-label">Subject:
-                <select name="subject">
+                <select name="subject_id">
                     @foreach($subjects as $subject)
-                        <option value="{{$subject->id}}">{{$subject->name}}</option>
+                        <option selected value="{{$subject->id}}">{{$subject->name}}</option>
                     @endforeach
                 </select>
             </label>
