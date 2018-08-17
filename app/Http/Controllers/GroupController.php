@@ -28,17 +28,26 @@ class GroupController extends Controller
                 ->where("{$marks}.subject_id", $subject->id);
             $query->selectSub($subQuery, $subject->id);
         }
-
         $subQueryAvg = Mark::selectRaw("AVG({$marks}.mark) as mark")
             ->whereRaw("{$marks}.group_id = groups.id");
         $query->selectSub($subQueryAvg, "avg");
-
         $avgs = $query->get();
+
+        $students = Student::all();
+        $students->load('group', 'marks');
+        foreach ($students as $student) {
+            $student->avg_mark = $student->marks->avg('mark');
+        }
+        $achievers = $students->where('avg_mark', '=', 5);
+        $goods = $students->where('avg_mark', '>', 4.5)->where('avg_mark', '<', 5);
+
         return view('groups/groups', [
             'groups' => $groups,
             'subjects' => $subjects,
             'marks' => $marks,
             'avgs' => $avgs,
+            'achievers' => $achievers,
+            'goods' => $goods
         ]);
     }
 

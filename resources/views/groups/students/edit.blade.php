@@ -16,6 +16,10 @@
         <div class="col-sm-6">
             <input type="text" name="patronymic" id="name" class="form-control" value="{{$student->patronymic}}">
         </div>
+        <label for="birth_date" class="col-sm-3 control-label">Date of Birth</label>
+        <div class="col-sm-6">
+            <input type="date" name="birth_date" id="birth_date" class="form-control" value="{{$student->birth_date}}">
+        </div>
         <div class="col-sm-6">
             <button type="submit" class="btn btn-success">
                 <i class="fa fa-plus"></i>

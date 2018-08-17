@@ -10,8 +10,11 @@ class Student extends Model
         'name',
         'surname',
         'patronymic',
-        'group_id'
+        'group_id',
+        'birth_date',
     ];
+
+    protected $appends = array('avg_mark');
 
     public function group()
     {

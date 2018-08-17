@@ -51,4 +51,6 @@
             </tr>
         @endforeach
     </table>
+    @include('groups/students/students')
 @endsection
+

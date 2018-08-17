@@ -54,7 +54,7 @@ class StudentController extends Controller
     {
         $validated = $request->validated();
         $student->update($validated);
-        return redirect()->route('groups.students.show');
+        return redirect()->route('groups.students.show', [$group, $student]);
     }
 
     public function destroy(Group $group, Student $student)

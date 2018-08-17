@@ -33,6 +33,7 @@
                 <th scope="col">Surname</th>
                 <th scope="col">Name</th>
                 <th scope="col">Patronymic</th>
+                <th scope="col">Date of Birth</th>
                 <th scope="col">Marks</th>
                 <th scope="col">Average Rating</th>
             </tr>
@@ -42,13 +43,16 @@
                 @php
                     $avg = $student->marks->avg('mark');
                     $class_name;
-                    if ($avg > 4.5) {
+                    if ($avg == 5) {
                         $class_name = "bg-success";
-                    } elseif ($avg <= 4.5 && $avg > 3) {
+                    } elseif ($avg >= 4.5) {
                         $class_name = "bg-warning";
                     } elseif ($avg <= 3) {
                         $class_name = "bg-danger";
+                    } else {
+                        $class_name = "table-light";
                     }
+
                 @endphp
                 <tr class="{{$class_name}}">
                     <td>
@@ -62,6 +66,9 @@
                     </td>
                     <td>
                         <div>{{$student->patronymic}}</div>
+                    </td>
+                    <td>
+                        <div>{{$student->birth_date}}</div>
                     </td>
                     <td>
                         <table class="table table-bordered table-sm">

@@ -26,7 +26,8 @@ class StoreStudent extends FormRequest
         return [
             'name' => 'required|max:30|',
             'surname' => 'required|max:30',
-            'patronymic' => 'required|max:30'
+            'patronymic' => 'required|max:30',
+            'birth_date' => 'required'
         ];
     }
 }

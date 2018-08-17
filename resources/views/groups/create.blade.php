@@ -5,11 +5,11 @@
     @csrf
     <label for="name" class="col-sm-3 control-label">Group name</label>
     <div class="col-sm-6">
-        <input type="text" name="name" id="name" class="form-control">
+        <input type="text" name="name" id="name" class="form-control" value="{{old('name')}}">
     </div>
     <label for="description" class="col-sm-3 control-label">Group description</label>
     <div class="col-sm-6">
-        <textarea name="description" id="description" class="form-control"></textarea>
+        <textarea name="description" id="description" class="form-control">{{old('description')}}</textarea>
     </div>
     <div class="col-sm-6">
         <button type="submit" class="btn btn-success">

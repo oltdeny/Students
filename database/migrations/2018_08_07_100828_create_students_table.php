@@ -20,6 +20,7 @@ class CreateStudentsTable extends Migration
             $table->string('surname');
             $table->string('name');
             $table->string('patronymic');
+            $table->date('birth_date');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
             $table->timestamps();
         });
