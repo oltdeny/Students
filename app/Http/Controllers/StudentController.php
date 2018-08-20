@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Student\StoreStudent;
+use App\Http\Requests\Student\SearchStudents;
 use App\Models\Group;
 use App\Models\Student;
 use App\Models\Subject;
@@ -15,7 +16,6 @@ class StudentController extends Controller
     {
         return view('groups/students/create', ['group' => $group]);
     }
-
 
     public function store(StoreStudent $request, Group $group)
     {
@@ -61,5 +61,24 @@ class StudentController extends Controller
     {
         $student->delete();
         return redirect()->route('groups.show', $group);
+    }
+
+    public function search(Request $request, Group $group)
+    {
+        if (isset($request->name) || isset($request->surname) || isset($request->patronymic)) {
+            $students = Student::where('group_id', '=', $group->id)
+                ->filter($request)
+                ->paginate(3);
+        } else {
+            $students = Student::where('group_id', '=', $group->id)
+                ->paginate(3);
+        }
+        $students->load('marks');
+        $subjects = Subject::all();
+        return view('groups/show', [
+            'group' => $group,
+            'subjects' => $subjects,
+            'students' =>$students
+        ]);
     }
 }

@@ -26,4 +26,15 @@ class Student extends Model
         return $this->hasMany(Mark::class);
     }
 
+    public function scopeFilter($query, $request)
+    {
+        if (isset($request->surname)) {
+            $query->where('surname', $request->surname);
+        } if (isset($request->name)) {
+            $query->where('name', $request->name);
+        } if (isset($request->patronymic)) {
+            $query->where('patronymic', $request->patronymic);
+        }
+        return $query;
+    }
 }

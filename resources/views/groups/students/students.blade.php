@@ -29,6 +29,7 @@
                 </td>
             </tr>
         @endforeach
+        </tbody>
     </table>
 
     Good:
@@ -62,4 +63,5 @@
                 </td>
             </tr>
         @endforeach
+        </tbody>
     </table>

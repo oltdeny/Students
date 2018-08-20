@@ -18,7 +18,7 @@ class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::all();
+        $groups = Group::paginate(1);
         $marks = (new Mark)->getTable();
         $subjects = Subject::all();
         $query = Group::select('groups.*');
@@ -31,7 +31,7 @@ class GroupController extends Controller
         $subQueryAvg = Mark::selectRaw("AVG({$marks}.mark) as mark")
             ->whereRaw("{$marks}.group_id = groups.id");
         $query->selectSub($subQueryAvg, "avg");
-        $avgs = $query->get();
+        $avgs = $query->paginate(1);
 
         $students = Student::all();
         $students->load('group', 'marks');
@@ -68,10 +68,12 @@ class GroupController extends Controller
 
     public function show(Group $group)
     {
-        $group->load('students.marks');
+        $students = Student::where('group_id', $group->id)->paginate(3);
+        $students->load('marks');
         $subjects = Subject::all();
         return view('groups/show', [
             'group' => $group,
+            'students' => $students,
             'subjects' => $subjects
         ]);
     }

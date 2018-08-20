@@ -12,6 +12,7 @@
 */
 
 Route::view('/', 'welcome');
+Route::get('groups/{group}/students/search', 'StudentController@search')->name('groups.students.search');
 Route::resource('groups', 'GroupController');
 Route::resource('groups.students', 'StudentController');
 Route::resource('groups.students.marks', 'MarkController');

@@ -1,50 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <div style="display: inline-block">
-        <form action="{{route('groups.students.create', $group)}}" method="get">
-            @csrf
-            <div class="col-sm-6">
-                <button type="submit" class="btn btn-success">
-                    Add student
-                </button>
-            </div>
-        </form>
-    </div>
-    <div style="display: inline-block">
-        <form action="{{route('groups.destroy', $group)}}" method="post">
-            @csrf
-            {{method_field('DELETE')}}
-            <button class="btn btn-danger">Delete current Group</button>
-        </form>
-    </div>
-    <div style="display: inline-block">
-        <form action="{{route('groups.edit', $group)}}" method="get">
-            @csrf
-            <button class="btn btn-info">Edit current Group</button>
-        </form>
-    </div>
-    @include('errors')
-    <form class="form-group" action="{{route('groups.students.search', $group)}}" method="get">
-        @csrf
-        <label for="name">Search student by:</label>
-        <div class="row">
-            <div class="col">
-                <input type="text" name="name" id="name" class="form-control" placeholder="name">
-            </div>
-            <div class="col">
-                <input type="text" name="surname"class="form-control" placeholder="surname">
-            </div>
-            <div class="col">
-                <input type="text" name="patronymic" class="form-control" placeholder="patronymic">
-            </div>
-            <div class="col">
-                <button class="btn btn-info">Search</button>
-            </div>
-        </div>
-
-    </form>
-    <div>
         Students of group: {{$group->name}}
         <table class="table table-bordered table-sm">
             <thead class="thead-dark">
@@ -111,6 +67,5 @@
             @endforeach
             </tbody>
         </table>
-        {{$students->links()}}
     </div>
 @endsection

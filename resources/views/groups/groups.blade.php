@@ -51,6 +51,6 @@
             </tr>
         @endforeach
     </table>
-    @include('groups/students/students')
+    {{$groups->links()}}
 @endsection
 
