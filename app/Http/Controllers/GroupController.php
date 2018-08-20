@@ -11,7 +11,6 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use MongoDB\Driver\Query;
-use function PHPSTORM_META\type;
 use Psy\Util\Str;
 
 class GroupController extends Controller
@@ -33,21 +32,11 @@ class GroupController extends Controller
         $query->selectSub($subQueryAvg, "avg");
         $avgs = $query->paginate(1);
 
-        $students = Student::all();
-        $students->load('group', 'marks');
-        foreach ($students as $student) {
-            $student->avg_mark = $student->marks->avg('mark');
-        }
-        $achievers = $students->where('avg_mark', '=', 5);
-        $goods = $students->where('avg_mark', '>', 4.5)->where('avg_mark', '<', 5);
-
         return view('groups/groups', [
             'groups' => $groups,
             'subjects' => $subjects,
             'marks' => $marks,
             'avgs' => $avgs,
-            'achievers' => $achievers,
-            'goods' => $goods
         ]);
     }
 

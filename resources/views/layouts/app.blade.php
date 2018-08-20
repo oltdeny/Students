@@ -14,6 +14,7 @@
     <div style="display: inline-block"><a href="{{url('/')}}" class="nav-link">Main</a></div>
     <div style="display: inline-block"><a href="{{route('groups.index')}}" class="nav-link">Groups</a></div>
     <div style="display: inline-block"><a href="{{route('subjects.index')}}" class="nav-link">Subjects</a></div>
+    <div style="display: inline-block"><a href="{{route('groups.students.index', 0)}}" class="nav-link">Outstanding students</a></div>
 </nav>
 <hr>
 <div class="container">

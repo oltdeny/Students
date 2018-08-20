@@ -1,3 +1,6 @@
+@extends('layouts.app')
+@section('content')
+<div style="display: inline-block">
     Achievers:
     <table class="table table-bordered table-sm">
         <thead class="thead-dark">
@@ -31,7 +34,9 @@
         @endforeach
         </tbody>
     </table>
+</div>
 
+<div style="display: inline-block">
     Good:
     <table class="table table-bordered table-sm">
         <thead class="thead-dark">
@@ -65,3 +70,6 @@
         @endforeach
         </tbody>
     </table>
+</div>
+{{$students->links()}}
+@endsection
