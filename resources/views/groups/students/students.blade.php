@@ -71,5 +71,4 @@
         </tbody>
     </table>
 </div>
-{{$students->links()}}
 @endsection

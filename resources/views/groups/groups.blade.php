@@ -3,7 +3,7 @@
     <form action="{{route('groups.create')}}" method="get">
         @csrf
         <div class="col-sm-6">
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-success" disabled>
                 Add group
             </button>
         </div>
@@ -12,18 +12,15 @@
     <table class="table table-bordered table-sm">
         <thead class="thead-dark">
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Average Rating</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
         @foreach($groups as $group)
             <tr>
-                <td class="table-text">
-                    <div>{{$group->id}}</div>
-                </td>
                 <td class="table-text">
                     <div><a href="{{route('groups.show', $group)}}">{{$group->name}}</a></div>
                 </td>
@@ -48,9 +45,17 @@
                             </tr>
                     </table>
                 </td>
+                <td>
+                    <form action="{{route('groups.destroy', $group)}}" method="post">
+                        @csrf
+                        {{method_field('DELETE')}}
+                        <button class="btn btn-danger" disabled>Delete current Group</button>
+                    </form>
+                </td>
             </tr>
         @endforeach
     </table>
     {{$groups->links()}}
+
 @endsection
 

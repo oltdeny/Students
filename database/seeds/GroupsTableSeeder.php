@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class MarksTableSeeder extends Seeder
+class GroupsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,7 @@ class MarksTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Mark::class, 150)->create();
+        $groups = factory(App\Models\Group::class, 5)->create();
+
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @include('errors')
-    <form action="{{route('groups.students.update', [$group, $student])}}" method="post">
+    <form action="{{route('groups.students.update', [$currentGroup, $student])}}" method="post">
         @csrf
         {{method_field('PUT')}}
         <label for="name" class="col-sm-3 control-label">Name</label>
@@ -19,6 +19,17 @@
         <label for="birth_date" class="col-sm-3 control-label">Date of Birth</label>
         <div class="col-sm-6">
             <input type="date" name="birth_date" id="birth_date" class="form-control" value="{{$student->birth_date}}">
+        </div>
+        <div class="col-sm-6">
+            <label for="group_id">
+                Group:
+                <select name="group_id">
+                    <option selected value="{{$currentGroup->id}}">{{$currentGroup->name}}</option>
+                    @foreach($groups as $group)
+                        <option value="{{$group->id}}">{{$group->name}}</option>
+                    @endforeach
+                </select>
+            </label>
         </div>
         <div class="col-sm-6">
             <button type="submit" class="btn btn-success">

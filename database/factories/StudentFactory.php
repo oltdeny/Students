@@ -14,13 +14,12 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\Models\Student::class, function (Faker $faker) {
+    $name = $faker->name;
+    $fio = explode(' ', $name);
     return [
-        'group_id' => function () {
-            return factory(App\Models\Group::class)->create()->id;
-        },
-        'name' => $faker->name,
-        'surname' => $faker->name,
-        'patronymic' => $faker->name,
+        'name' => $fio[1],
+        'surname' => $fio[0],
+        'patronymic' => $fio[2],
         'birth_date' => $faker->date()
     ];
 });

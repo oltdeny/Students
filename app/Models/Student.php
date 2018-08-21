@@ -34,6 +34,8 @@ class Student extends Model
             $query->where('name', $request->name);
         } if (isset($request->patronymic)) {
             $query->where('patronymic', $request->patronymic);
+        } if (isset($request->group_id)) {
+            $query->where('group_id', $request->group_id);
         }
         return $query;
     }

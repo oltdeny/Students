@@ -11,8 +11,10 @@
 |
 */
 
-Route::view('/', 'welcome');
-Route::get('groups/{group}/students/search', 'StudentController@search')->name('groups.students.search');
+Route::post('/search', 'HomeController@search')->name('search');
+Route::get('/', 'HomeController@index');
+Route::post('groups/{group}/students/{student}/addPhoto', 'StudentController@addPhoto')
+    ->name('groups.students.addPhoto');
 Route::resource('groups', 'GroupController');
 Route::resource('groups.students', 'StudentController');
 Route::resource('groups.students.marks', 'MarkController');

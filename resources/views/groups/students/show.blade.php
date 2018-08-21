@@ -7,13 +7,6 @@
         </form>
     </div>
     <div style="display: inline-block">
-        <form action="{{route('groups.students.destroy', [$group, $student])}}" method="post">
-            @csrf
-            {{method_field('DELETE')}}
-            <button class="btn btn-danger">Delete current Student</button>
-        </form>
-    </div>
-    <div style="display: inline-block">
         <form action="{{route('groups.students.edit', [$group, $student])}}" method="get">
             @csrf
             <button class="btn btn-info">Edit current Student</button>
@@ -23,31 +16,27 @@
         <a href="{{route('groups.show', $group)}}" class="btn btn-info">Back to Group</a>
     </div>
     <div>
-        <table class="table table-bordered">
-            <thead>
-            Student of group: {{$group->name}}
-            <th>Id</th>
-            <th>Surname</th>
-            <th>Name</th>
-            <th>Patronymic</th>
-            </thead>
-            <tbody>
-            <tr>
-                <td class="table-text">
-                    <div>{{$student->id}}</div>
-                </td>
-                <td class="table-text">
-                    <div>{{$student->surname}}</div>
-                </td>
-                <td class="table-text">
-                    <div>{{$student->name}}</div>
-                </td>
-                <td class="table-text">
-                    <div>{{$student->patronymic}}</div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div style="display: inline-block">
+            <img src="/storage/{{$student->id}}.jpg">
+        </div>
+        <div style="display: inline-block">
+
+            <div> Group: {{$group->name}}</div>
+            Full name:
+            <div>{{$student->surname}}</div>
+            <div>{{$student->name}}</div>
+            <div>{{$student->patronymic}}</div>
+        </div>
+        <form action="{{route('groups.students.addPhoto', [$group, $student])}}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="photo" name="photo">
+                <label class="custom-file-label" for="photo">Choose file</label>
+            </div>
+            <div>
+                <button class="btn">Submit</button>
+            </div>
+        </form>
     </div>
     <div>
         <table class="table table-bordered">

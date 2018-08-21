@@ -1,97 +1,71 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Hello!
-                </div>
-                <div class="title" style="font-size: 50px">
-                    It is database of Students.
-                    You can see:
-                </div>
-                <div class="links">
-                    <a href="{{route('groups.index')}}">Groups</a>
-                </div>
-                <div class="links">
-                    <a href="{{route('subjects.index')}}">Subjects</a>
-                </div>
+@extends('layouts.app')
+@section('content')
+    <form action="{{route('search')}}" method="post">
+        @csrf
+        <label for="name">Search student by:</label>
+        <div class="row">
+            <div class="col">
+                <input type="text" name="name" id="name" class="form-control" placeholder="name">
+            </div>
+            <div class="col">
+                <input type="text" name="surname"class="form-control" placeholder="surname">
+            </div>
+            <div class="col">
+                <input type="text" name="patronymic" class="form-control" placeholder="patronymic">
+            </div>
+            <div class="col">
+                <select title="Group" class="custom-select" name="group_id">
+                    @foreach($groups as $group)
+                        <option value="{{$group->id}}">Group {{$group->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col">
+                <button class="btn btn-info">Search</button>
             </div>
         </div>
-    </body>
-</html>
+    </form>
+        <table class="table table-bordered table-sm">
+            <thead>
+            <tr>
+                <th scope="col">Group</th>
+                <th scope="col">Students</th>
+                <th scope="col">Date of Birth</th>
+                @foreach($subjects as $subject)
+                    <th scope="col">{{$subject->name}}</th>
+                @endforeach
+                <th scope="col">Average Rating</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+                    @foreach($students as $student)
+                        <tr>
+                            <td>{{$student->group->name}}</td>
+                            <td>{{$student->name}} {{$student->surname}} {{$student->patronymic}}</td>
+                            <td>{{$student->birth_date}}</td>
+                            @foreach($subjects as $subject)
+                                <td>
+                                    {{$student->marks->where('subject_id', $subject->id)->avg('mark')}}
+                                </td>
+                            @endforeach
+                            <td>
+                                {{$student->marks->avg('mark')}}
+                            </td>
+                            <td>
+                                <form action="{{route('groups.students.show', [$student->group, $student])}}" method="post">
+                                    @csrf
+                                    {{method_field('DELETE')}}
+                                    <button class="btn btn-danger" disabled>Delete</button>
+                                </form>
+                                <form action="{{route('groups.students.show', [$student->group, $student])}}" method="post">
+                                    @csrf
+                                    <button class="btn btn-outline-info" disabled>Анкета</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+            </tbody>
+        </table>
+    {{$students->links()}}
+@endsection

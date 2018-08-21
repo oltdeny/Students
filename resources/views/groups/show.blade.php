@@ -12,13 +12,6 @@
         </form>
     </div>
     <div style="display: inline-block">
-        <form action="{{route('groups.destroy', $group)}}" method="post">
-            @csrf
-            {{method_field('DELETE')}}
-            <button class="btn btn-danger">Delete current Group</button>
-        </form>
-    </div>
-    <div style="display: inline-block">
         <form action="{{route('groups.edit', $group)}}" method="get">
             @csrf
             <button class="btn btn-info">Edit current Group</button>
@@ -38,24 +31,26 @@
             <div class="col">
                 <input type="text" name="patronymic" class="form-control" placeholder="patronymic">
             </div>
+            @if(isset($prev))
+                <div class="col">
+                    <input type="hidden" name="prev" value="{{$prev}}">
+                </div>
+            @endif
             <div class="col">
                 <button class="btn btn-info">Search</button>
             </div>
         </div>
-
     </form>
     <div>
         Students of group: {{$group->name}}
         <table class="table table-bordered table-sm">
             <thead class="thead-dark">
             <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Surname</th>
-                <th scope="col">Name</th>
-                <th scope="col">Patronymic</th>
+                <th scope="col">Full name</th>
                 <th scope="col">Date of Birth</th>
                 <th scope="col">Marks</th>
                 <th scope="col">Average Rating</th>
+                <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -76,15 +71,8 @@
                 @endphp
                 <tr class="{{$class_name}}">
                     <td>
-                        <div><a href="{{route('groups.students.show', [$group, $student])}}">{{$student->id}}</a></div>
-                    </td>
-                    <td>
                         <div>{{$student->surname}}</div>
-                    </td>
-                    <td>
                         <div>{{$student->name}}</div>
-                    </td>
-                    <td>
                         <div>{{$student->patronymic}}</div>
                     </td>
                     <td>
@@ -106,6 +94,14 @@
                     </td>
                     <td>
                         {{$student->marks->avg('mark')}}
+                    </td>
+                    <td>
+                        <form action="{{route('groups.students.show', [$group, $student])}}" method="post">
+                            @csrf
+                            {{method_field('DELETE')}}
+                            <button class="btn btn-danger" disabled>Delete</button>
+                        </form>
+                        <a href="{{route('groups.students.show', [$group, $student])}}">Анкета</a>
                     </td>
                 </tr>
             @endforeach
