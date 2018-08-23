@@ -14,7 +14,10 @@ class Student extends Model
         'birth_date',
     ];
 
-    protected $appends = array('avg_mark');
+    public function getAvgMarkAttribute($value)
+    {
+
+    }
 
     public function group()
     {
@@ -30,12 +33,27 @@ class Student extends Model
     {
         if (isset($request->surname)) {
             $query->where('surname', $request->surname);
-        } if (isset($request->name)) {
+        }
+        if (isset($request->name)) {
             $query->where('name', $request->name);
-        } if (isset($request->patronymic)) {
+        }
+        if (isset($request->patronymic)) {
             $query->where('patronymic', $request->patronymic);
-        } if (isset($request->group_id)) {
+        }
+        if (isset($request->group_id)) {
             $query->where('group_id', $request->group_id);
+        }
+        $subjects = Subject::all();
+        $query->select('students.*');
+        foreach ($subjects as $subject) {
+            if (isset($request->{'avg' . $subject->id})) {
+                $parameters = explode('-', $request->{'avg' . $subject->id});
+                $subQuery = Mark::selectRaw("AVG(marks.mark)")
+                    ->whereRaw("marks.student_id = students.id")
+                    ->where("marks.subject_id", $subject->id);
+                $query->selectSub($subQuery, "avg{$subject->id}")
+                    ->havingRaw("avg{$subject->id} BETWEEN {$parameters[0]} AND {$parameters[1]}");
+            }
         }
         return $query;
     }

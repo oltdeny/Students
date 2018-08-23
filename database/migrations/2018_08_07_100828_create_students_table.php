@@ -21,6 +21,7 @@ class CreateStudentsTable extends Migration
             $table->string('name');
             $table->string('patronymic');
             $table->date('birth_date');
+            $table->string('avatar')->default('default.jpg');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
             $table->timestamps();
         });

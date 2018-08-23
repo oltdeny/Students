@@ -11,24 +11,10 @@ use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\File\File;
+use Image;
 
 class StudentController extends Controller
 {
-    public function index()
-    {
-        $students = Student::all();
-        $students->load('group', 'marks');
-        foreach ($students as $student) {
-            $student->avg_mark = $student->marks->avg('mark');
-        }
-        $achievers = $students->where('avg_mark', '=', 5);
-        $goods = $students->where('avg_mark', '>', 4.5)->where('avg_mark', '<', 5);
-        return view('groups/students/students', [
-            'achievers' => $achievers,
-            'goods' => $goods
-        ]);
-    }
-
     public function create(Group $group)
     {
         return view('groups/students/create', ['group' => $group]);
@@ -104,10 +90,12 @@ class StudentController extends Controller
 
     public function addPhoto(Request $request, Group $group, Student $student)
     {
-        if ($request->hasFile('photo')) {
-            if ($request->file('photo')->isValid()) {
-                Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
-            }
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $filename = $student->id.'.'.$avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(300, 300)->save(public_path('/avatars/'.$filename));
+            $student->avatar = $filename;
+            $student->save();
         }
         return redirect()->route('groups.students.show', [$group, $student]);
     }

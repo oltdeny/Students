@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(Auth::user()->is_admin)
     <div style="display: inline-block">
         <form action="{{route('groups.students.create', $group)}}" method="get">
             @csrf
@@ -17,35 +18,14 @@
             <button class="btn btn-info">Edit current Group</button>
         </form>
     </div>
+    @endif
     @include('errors')
-    <form class="form-group" action="{{route('groups.students.search', $group)}}" method="get">
-        @csrf
-        <label for="name">Search student by:</label>
-        <div class="row">
-            <div class="col">
-                <input type="text" name="name" id="name" class="form-control" placeholder="name">
-            </div>
-            <div class="col">
-                <input type="text" name="surname"class="form-control" placeholder="surname">
-            </div>
-            <div class="col">
-                <input type="text" name="patronymic" class="form-control" placeholder="patronymic">
-            </div>
-            @if(isset($prev))
-                <div class="col">
-                    <input type="hidden" name="prev" value="{{$prev}}">
-                </div>
-            @endif
-            <div class="col">
-                <button class="btn btn-info">Search</button>
-            </div>
-        </div>
-    </form>
     <div>
         Students of group: {{$group->name}}
         <table class="table table-bordered table-sm">
             <thead class="thead-dark">
             <tr>
+                <th scope="col">Avatar</th>
                 <th scope="col">Full name</th>
                 <th scope="col">Date of Birth</th>
                 <th scope="col">Marks</th>
@@ -71,6 +51,9 @@
                 @endphp
                 <tr class="{{$class_name}}">
                     <td>
+                        <img src="/avatars/{{$student->avatar}}" style="width: 100px; height: 100px; border-radius: 50%">
+                    </td>
+                    <td>
                         <div>{{$student->surname}}</div>
                         <div>{{$student->name}}</div>
                         <div>{{$student->patronymic}}</div>
@@ -95,14 +78,20 @@
                     <td>
                         {{$student->marks->avg('mark')}}
                     </td>
+                    @if(Auth::user()->is_admin)
                     <td>
                         <form action="{{route('groups.students.show', [$group, $student])}}" method="post">
                             @csrf
                             {{method_field('DELETE')}}
-                            <button class="btn btn-danger" disabled>Delete</button>
+                            <button class="btn btn-danger">Delete</button>
                         </form>
                         <a href="{{route('groups.students.show', [$group, $student])}}">Анкета</a>
                     </td>
+                    @else
+                    <td>
+                        Action allowed only for admin
+                    </td>
+                    @endif
                 </tr>
             @endforeach
             </tbody>

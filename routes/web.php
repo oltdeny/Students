@@ -11,7 +11,6 @@
 |
 */
 
-Route::post('/search', 'HomeController@search')->name('search');
 Route::get('/', 'HomeController@index');
 Route::post('groups/{group}/students/{student}/addPhoto', 'StudentController@addPhoto')
     ->name('groups.students.addPhoto');
@@ -19,3 +18,7 @@ Route::resource('groups', 'GroupController');
 Route::resource('groups.students', 'StudentController');
 Route::resource('groups.students.marks', 'MarkController');
 Route::resource('subjects', 'SubjectController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

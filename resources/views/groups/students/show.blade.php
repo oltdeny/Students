@@ -17,27 +17,26 @@
     </div>
     <div>
         <div style="display: inline-block">
-            <img src="/storage/{{$student->id}}.jpg">
+            <img src="/avatars/{{$student->avatar}}" style="width: 150px; height: 150px; border-radius: 50%; margin-right: 20px">
         </div>
         <div style="display: inline-block">
-
             <div> Group: {{$group->name}}</div>
             Full name:
             <div>{{$student->surname}}</div>
             <div>{{$student->name}}</div>
             <div>{{$student->patronymic}}</div>
         </div>
-        <form action="{{route('groups.students.addPhoto', [$group, $student])}}" method="post" enctype="multipart/form-data">
-            @csrf
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="photo" name="photo">
-                <label class="custom-file-label" for="photo">Choose file</label>
-            </div>
-            <div>
-                <button class="btn">Submit</button>
-            </div>
-        </form>
     </div>
+    <form action="{{route('groups.students.addPhoto', [$group, $student])}}" method="post" enctype="multipart/form-data">
+        @csrf
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="avatar" name="avatar">
+            <label class="custom-file-label" for="avatar">Choose file</label>
+        </div>
+        <div>
+            <button class="btn">Submit</button>
+        </div>
+    </form>
     <div>
         <table class="table table-bordered">
             <thead>Marks:</thead>
