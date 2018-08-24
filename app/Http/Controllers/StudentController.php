@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Student\StoreStudent;
 use App\Http\Requests\Student\SearchStudents;
@@ -17,7 +18,13 @@ class StudentController extends Controller
 {
     public function create(Group $group)
     {
-        return view('groups/students/create', ['group' => $group]);
+        $user = Auth::user();
+        if ($user->can('authorize', Student::class)) {
+            return view('groups/students/create', ['group' => $group]);
+        } else {
+            $message = "you don't have permission";
+            return redirect()->back()->with('message', $message);
+        }
     }
 
     public function store(StoreStudent $request, Group $group)
@@ -30,29 +37,41 @@ class StudentController extends Controller
 
     public function show(Group $group, Student $student)
     {
-        $student->load([
-            'marks' => function ($query) {
-                $query->orderBy('subject_id', 'asc');
-            },
-            'group',
-            'marks.subject'
-        ]);
-        $subjects = Subject::all();
-        return view('groups/students/show', [
-            'student' => $student,
-            'subjects' => $subjects,
-            'group' => $group
-        ]);
+        $user = Auth::user();
+        if ($user->can('authorize', Student::class)) {
+            $student->load([
+                'marks' => function ($query) {
+                    $query->orderBy('subject_id', 'asc');
+                },
+                'group',
+                'marks.subject'
+            ]);
+            $subjects = Subject::all();
+            return view('groups/students/show', [
+                'student' => $student,
+                'subjects' => $subjects,
+                'group' => $group
+            ]);
+        } else {
+            $message = "you don't have permission";
+            return redirect()->back()->with('message', $message);
+        }
     }
 
     public function edit(Group $group, Student $student)
     {
-        $groups = Group::where('id', '!=', $group->id)->get();
-        return view('groups/students/edit', [
-            'currentGroup' => $group,
-            'groups' => $groups,
-            'student' => $student
-        ]);
+        $user = Auth::user();
+        if ($user->can('authorize', Student::class)) {
+            $groups = Group::where('id', '!=', $group->id)->get();
+            return view('groups/students/edit', [
+                'currentGroup' => $group,
+                'groups' => $groups,
+                'student' => $student
+            ]);
+        } else {
+            $message = "you don't have permission";
+            return redirect()->back()->with('message', $message);
+        }
     }
 
     public function update(UpdateStudent $request, Group $group, Student $student)
@@ -65,38 +84,31 @@ class StudentController extends Controller
 
     public function destroy(Group $group, Student $student)
     {
-        $student->delete();
-        return redirect()->route('groups.show', $group);
-    }
-
-    public function search(Request $request, Group $group)
-    {
-        if (isset($request->name) || isset($request->surname) || isset($request->patronymic)) {
-            $students = Student::where('group_id', '=', $group->id)
-                ->filter($request)
-                ->paginate(3);
+        $user = Auth::user();
+        if ($user->can('authorize', Student::class)) {
+            $student->delete();
+            return redirect()->route('groups.show', $group);
         } else {
-            $students = Student::where('group_id', '=', $group->id)
-                ->paginate(3);
+            $message = "you don't have permission";
+            return redirect()->back()->with('message', $message);
         }
-        $students->load('marks');
-        $subjects = Subject::all();
-        return view('groups/show', [
-            'group' => $group,
-            'subjects' => $subjects,
-            'students' => $students
-        ]);
     }
 
     public function addPhoto(Request $request, Group $group, Student $student)
     {
-        if ($request->hasFile('avatar')) {
-            $avatar = $request->file('avatar');
-            $filename = $student->id.'.'.$avatar->getClientOriginalExtension();
-            Image::make($avatar)->resize(300, 300)->save(public_path('/avatars/'.$filename));
-            $student->avatar = $filename;
-            $student->save();
+        $user = Auth::user();
+        if ($user->can('authorize', Student::class)) {
+            if ($request->hasFile('avatar')) {
+                $avatar = $request->file('avatar');
+                $filename = $student->id.'.'.$avatar->getClientOriginalExtension();
+                Image::make($avatar)->resize(300, 300)->save(public_path('/avatars/'.$filename));
+                $student->avatar = $filename;
+                $student->save();
+            }
+            return redirect()->route('groups.students.show', [$group, $student]);
+        } else {
+            $message = "you don't have permission";
+            return redirect()->back()->with('message', $message);
         }
-        return redirect()->route('groups.students.show', [$group, $student]);
     }
 }

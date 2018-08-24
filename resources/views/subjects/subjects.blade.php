@@ -1,12 +1,15 @@
 @extends('layouts.app')
 @section('content')
-    @if(Auth::user()->is_admin)
     <div>
         <form action="{{route('subjects.create')}}" method="get">
             @csrf
             <button class="btn btn-success">Add Subject</button>
         </form>
     </div>
+    @if(session('message'))
+        <div class="alert alert-danger">
+            {{session('message')}}
+        </div>
     @endif
     <table class="table table-bordered">
         <thead>
@@ -18,7 +21,6 @@
             <tr>
                 <td class="table-text">
                     <div style="display: inline-block">{{$subject->name}}</div>
-                    @if(Auth::user()->is_admin)
                     <div style="display: inline-block">
                         <form action="{{route('subjects.destroy', $subject)}}" method="post">
                             @csrf
@@ -26,7 +28,6 @@
                             <button class="btn btn-danger">Delete</button>
                         </form>
                     </div>
-                    @endif
                 </td>
             </tr>
         @endforeach

@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use MongoDB\Driver\Query;
 use Psy\Util\Str;
@@ -42,7 +43,13 @@ class GroupController extends Controller
 
     public function create()
     {
-        return view('groups/create');
+        $user = Auth::user();
+        if ($user->can('authorize', Group::class)) {
+            return view('groups/create');
+        } else {
+            $message = "you don't have permission";
+            return redirect()->back()->with('message', $message);
+        }
     }
 
 
@@ -70,9 +77,15 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
-        return view('groups/edit', [
-            'group' => $group
-        ]);
+        $user = Auth::user();
+        if ($user->can('authorize', Group::class)) {
+            return view('groups/edit', [
+                'group' => $group
+            ]);
+        } else {
+            $message = "you don't have permission";
+            return redirect()->back()->with('message', $message);
+        }
     }
 
 
@@ -88,7 +101,13 @@ class GroupController extends Controller
 
     public function destroy(Group $group)
     {
-        $group->delete();
-        return redirect('groups');
+        $user = Auth::user();
+        if ($user->can('authorize', Group::class)) {
+            $group->delete();
+            return redirect('groups');
+        } else {
+            $message = "you don't have permission";
+            return redirect()->back()->with('message', $message);
+        }
     }
 }

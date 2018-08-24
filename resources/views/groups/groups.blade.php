@@ -1,14 +1,19 @@
 @extends('layouts.app')
 @section('content')
-    @if(Auth::user()->is_admin)
-    <form action="{{route('groups.create')}}" method="get">
-        @csrf
-        <div class="col-sm-6">
-            <button type="submit" class="btn btn-success">
-                Add group
-            </button>
+    <div>
+        <form action="{{route('groups.create')}}" method="get">
+            @csrf
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-success">
+                    Add group
+                </button>
+            </div>
+        </form>
+    </div>
+    @if(session('message'))
+        <div class="alert alert-danger">
+            {{session('message')}}
         </div>
-    </form>
     @endif
     Groups:
     <table class="table table-bordered table-sm">
@@ -47,7 +52,6 @@
                             </tr>
                     </table>
                 </td>
-                @if(Auth::user()->is_admin)
                 <td>
                     <form action="{{route('groups.destroy', $group)}}" method="post">
                         @csrf
@@ -55,11 +59,6 @@
                         <button class="btn btn-danger">Delete current Group</button>
                     </form>
                 </td>
-                @else
-                <td>
-                    Action allowed only for admin
-                </td>
-                @endif
             </tr>
         @endforeach
     </table>

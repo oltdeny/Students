@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @if(Auth::user()->is_admin)
     <div style="display: inline-block">
         <form action="{{route('groups.students.create', $group)}}" method="get">
             @csrf
@@ -18,6 +17,10 @@
             <button class="btn btn-info">Edit current Group</button>
         </form>
     </div>
+    @if(session('message'))
+        <div class="alert alert-danger">
+            {{session('message')}}
+        </div>
     @endif
     @include('errors')
     <div>
@@ -78,7 +81,7 @@
                     <td>
                         {{$student->marks->avg('mark')}}
                     </td>
-                    @if(Auth::user()->is_admin)
+                    {{--@if(Auth::user()->is_admin)--}}
                     <td>
                         <form action="{{route('groups.students.show', [$group, $student])}}" method="post">
                             @csrf
@@ -87,11 +90,11 @@
                         </form>
                         <a href="{{route('groups.students.show', [$group, $student])}}">Анкета</a>
                     </td>
-                    @else
-                    <td>
-                        Action allowed only for admin
-                    </td>
-                    @endif
+                    {{--@else--}}
+                    {{--<td>--}}
+                        {{--Action allowed only for admin--}}
+                    {{--</td>--}}
+                    {{--@endif--}}
                 </tr>
             @endforeach
             </tbody>

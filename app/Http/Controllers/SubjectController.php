@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Subject\StoreSubject;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SubjectController extends Controller
 {
@@ -20,7 +21,13 @@ class SubjectController extends Controller
 
     public function create()
     {
-        return view('subjects/create');
+        $user = Auth::user();
+        if ($user->can('authorize', Subject::class)) {
+            return view('subjects/create');
+        } else {
+            $message = "you don't have permission";
+            return redirect()->back()->with('message', $message);
+        }
     }
 
 
@@ -32,28 +39,15 @@ class SubjectController extends Controller
         return redirect('subjects');
     }
 
-
-    public function show(Subject $subject)
-    {
-        //
-    }
-
-
-    public function edit(Subject $subject)
-    {
-        //
-    }
-
-
-    public function update(Request $request, Subject $subject)
-    {
-        //
-    }
-
-
     public function destroy(Subject $subject)
     {
-        $subject->delete();
-        return redirect()->route('subjects.index');
+        $user = Auth::user();
+        if ($user->can('authorize', Subject::class)) {
+            $subject->delete();
+            return redirect()->route('subjects.index');
+        } else {
+            $message = "you don't have permission";
+            return redirect()->back()->with('message', $message);
+        }
     }
 }
