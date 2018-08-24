@@ -22,6 +22,9 @@
                 </select>
             </div>
             <div class="col">
+                <input type="text" name="per_page" class="form-control" placeholder="Per Page">
+            </div>
+            <div class="col">
                 <button class="btn btn-info">Search</button>
             </div>
             <div class="col">
@@ -92,5 +95,5 @@
         @endforeach
         </tbody>
     </table>
-    {{$students->links()}}
+    {{$paginatedCollection->links()}}
 @endsection

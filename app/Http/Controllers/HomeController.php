@@ -7,6 +7,7 @@ use App\Models\Mark;
 use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Style\StyleInterface;
 
@@ -36,16 +37,23 @@ class HomeController extends Controller
             $_SESSION = [];
         }
         $filter = (object)$_SESSION;
-        if (!empty($filter)) {
-            $students = Student::filter($filter)->simplePaginate(3);
-        } else {
-            $students = (new Student)->paginate(3);
-        }
+        $page = request()->get('page');
+        $students = Student::filter($filter)->get();
         $students->load('group', 'marks');
+        $total = $students->count();
+        $perPage = $request->per_page > 0 ? $request->per_page : 5;
+        $paginatedCollection = new LengthAwarePaginator($students, $total, $perPage, $page);
+        if ($page < 1) {
+            $students = $paginatedCollection->slice(0, $perPage);
+        } else {
+            $students = $paginatedCollection->slice(($page-1)*$perPage, $perPage);
+        }
+
         return view('home', [
             'filter' => $filter,
             'groups' => $groups,
             'students' => $students,
+            'paginatedCollection' => $paginatedCollection,
             'subjects' => $subjects
         ]);
     }
