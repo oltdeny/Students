@@ -41,7 +41,7 @@ class HomeController extends Controller
         $students = Student::filter($filter)->get();
         $students->load('group', 'marks');
         $total = $students->count();
-        $perPage = $request->per_page > 0 ? $request->per_page : 5;
+        $perPage = $filter->per_page > 0 ? $filter->per_page : 5;
         $paginatedCollection = new LengthAwarePaginator($students, $total, $perPage, $page);
         if ($page < 1) {
             $students = $paginatedCollection->slice(0, $perPage);
