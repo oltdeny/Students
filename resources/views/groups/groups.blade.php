@@ -1,15 +1,17 @@
 @extends('layouts.app')
 @section('content')
-    <div>
-        <form action="{{route('groups.create')}}" method="get">
-            @csrf
-            <div class="col-sm-6">
-                <button type="submit" class="btn btn-success">
-                    Add group
-                </button>
-            </div>
-        </form>
-    </div>
+    @can('create', \App\Models\Group::class)
+        <div>
+            <form action="{{route('groups.create')}}" method="get">
+                @csrf
+                <div class="col-sm-6">
+                    <button type="submit" class="btn btn-success">
+                        Add group
+                    </button>
+                </div>
+            </form>
+        </div>
+    @endcan
     @if(session('message'))
         <div class="alert alert-danger">
             {{session('message')}}
@@ -53,11 +55,13 @@
                     </table>
                 </td>
                 <td>
-                    <form action="{{route('groups.destroy', $group)}}" method="post">
-                        @csrf
-                        {{method_field('DELETE')}}
-                        <button class="btn btn-danger">Delete current Group</button>
-                    </form>
+                    @can('delete', $group)
+                        <form action="{{route('groups.destroy', $group)}}" method="post">
+                            @csrf
+                            {{method_field('DELETE')}}
+                            <button class="btn btn-danger">Delete current Group</button>
+                        </form>
+                    @endcan
                 </td>
             </tr>
         @endforeach

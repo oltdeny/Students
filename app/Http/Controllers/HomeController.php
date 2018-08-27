@@ -9,6 +9,7 @@ use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use stdClass;
 use Symfony\Component\Console\Style\StyleInterface;
 
 class HomeController extends Controller
@@ -29,9 +30,7 @@ class HomeController extends Controller
         $subjects = Subject::all();
         session_start();
         foreach ($request->request as $key => $parameter) {
-            if (isset($parameter)) {
-                $_SESSION[$key] = $parameter;
-            }
+            $_SESSION[$key] = $parameter;
         }
         if (isset($request->reset)) {
             $_SESSION = [];
@@ -52,7 +51,6 @@ class HomeController extends Controller
         } else {
             $students = $paginatedCollection->slice(($page-1)*$perPage, $perPage);
         }
-
         return view('home', [
             'filter' => $filter,
             'groups' => $groups,

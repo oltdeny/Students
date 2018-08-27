@@ -10,11 +10,21 @@ class MarkPolicy
 {
     use HandlesAuthorization;
 
-    public function authorize($user)
+    public function before($user)
     {
         if ($user->is_admin) {
             return true;
         }
+        return false;
+    }
+
+    public function create()
+    {
+        return false;
+    }
+
+    public function update()
+    {
         return false;
     }
 }

@@ -10,11 +10,25 @@ class GroupPolicy
 {
     use HandlesAuthorization;
 
-    public function authorize($user)
+    public function before($user)
     {
         if ($user->is_admin) {
             return true;
         }
+    }
+
+    public function create(User $user)
+    {
+        return false;
+    }
+
+    public function delete(Group $group)
+    {
+        return false;
+    }
+
+    public function update()
+    {
         return false;
     }
 }

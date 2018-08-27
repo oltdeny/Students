@@ -43,13 +43,8 @@ class GroupController extends Controller
 
     public function create()
     {
-        $user = Auth::user();
-        if ($user->can('authorize', Group::class)) {
-            return view('groups/create');
-        } else {
-            $message = "you don't have permission";
-            return redirect()->back()->with('message', $message);
-        }
+        $this->authorize('create', Group::class);
+        return view('groups/create');
     }
 
 
@@ -77,15 +72,10 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
-        $user = Auth::user();
-        if ($user->can('authorize', Group::class)) {
-            return view('groups/edit', [
-                'group' => $group
-            ]);
-        } else {
-            $message = "you don't have permission";
-            return redirect()->back()->with('message', $message);
-        }
+        $this->authorize('update', $group);
+        return view('groups/edit', [
+            'group' => $group
+        ]);
     }
 
 
@@ -101,13 +91,8 @@ class GroupController extends Controller
 
     public function destroy(Group $group)
     {
-        $user = Auth::user();
-        if ($user->can('authorize', Group::class)) {
-            $group->delete();
-            return redirect('groups');
-        } else {
-            $message = "you don't have permission";
-            return redirect()->back()->with('message', $message);
-        }
+        $this->authorize('delete', $group);
+        $group->delete();
+        return redirect('groups');
     }
 }

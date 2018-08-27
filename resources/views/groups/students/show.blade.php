@@ -1,17 +1,21 @@
 @extends('layouts.app')
 @section('content')
-    <div style="display: inline-block">
-        <form action="{{route('groups.students.marks.create', [$group, $student])}}" method="get">
-            @csrf
-            <button class="btn btn-success">Add Mark</button>
-        </form>
-    </div>
-    <div style="display: inline-block">
-        <form action="{{route('groups.students.edit', [$group, $student])}}" method="get">
-            @csrf
-            <button class="btn btn-info">Edit current Student</button>
-        </form>
-    </div>
+    @can('create', \App\Models\Mark::class)
+        <div style="display: inline-block">
+            <form action="{{route('groups.students.marks.create', [$group, $student])}}" method="get">
+                @csrf
+                <button class="btn btn-success">Add Mark</button>
+            </form>
+        </div>
+    @endcan
+    @can('update', $student)
+        <div style="display: inline-block">
+            <form action="{{route('groups.students.edit', [$group, $student])}}" method="get">
+                @csrf
+                <button class="btn btn-info">Edit current Student</button>
+            </form>
+        </div>
+    @endcan
     <div style="display: inline-block">
         <a href="{{route('groups.show', $group)}}" class="btn btn-info">Back to Group</a>
     </div>
@@ -27,16 +31,18 @@
             <div>{{$student->patronymic}}</div>
         </div>
     </div>
-    <form action="{{route('groups.students.addPhoto', [$group, $student])}}" method="post" enctype="multipart/form-data">
-        @csrf
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="avatar" name="avatar">
-            <label class="custom-file-label" for="avatar">Choose file</label>
-        </div>
-        <div>
-            <button class="btn">Submit</button>
-        </div>
-    </form>
+    @can('addPhoto', $student)
+        <form action="{{route('groups.students.addPhoto', [$group, $student])}}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="avatar" name="avatar">
+                <label class="custom-file-label" for="avatar">Choose file</label>
+            </div>
+            <div>
+                <button class="btn">Submit</button>
+            </div>
+        </form>
+    @endcan
     <div>
         <table class="table table-bordered">
             <thead>Marks:</thead>
@@ -46,9 +52,16 @@
                     <td>
                         {{$subject->name}}:
                         @foreach($student->marks->where('subject_id', $subject->id) as $mark)
+                            @can('update', $mark)
                             <div>
                                 <a href="{{route('groups.students.marks.edit', [$group, $student, $mark])}}">{{$mark->mark}}</a>
                             </div>
+                            @endcan
+                            @cannot('update', $mark)
+                                <div>
+                                    <p>{{$mark->mark}}</p>
+                                </div>
+                            @endcannot
                         @endforeach
                         Average Rating for {{$subject->name}}:
                         <div>{{$student->marks->where('subject_id', $subject->id)->avg('mark')}}</div>

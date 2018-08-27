@@ -1,17 +1,16 @@
 @extends('layouts.app')
 @section('content')
     <form action="" method="get">
-        @csrf
         <label for="name">Search student by:</label>
         <div class="row">
             <div class="col">
-                <input type="text" name="name" id="name" class="form-control" placeholder="name">
+                <input type="text" name="name" id="name" class="form-control" placeholder="name" value="{{isset($filter->name)?$filter->name: null }}">
             </div>
             <div class="col">
-                <input type="text" name="surname"class="form-control" placeholder="surname">
+                <input type="text" name="surname"class="form-control" placeholder="surname" value="{{isset($filter->surname)?$filter->surname: null }}">
             </div>
             <div class="col">
-                <input type="text" name="patronymic" class="form-control" placeholder="patronymic">
+                <input type="text" name="patronymic" class="form-control" placeholder="patronymic" value="{{isset($filter->patronymic)?$filter->patronymic: null }}">
             </div>
             <div class="col">
                 <select title="Group" class="custom-select" name="group_id">
@@ -22,7 +21,7 @@
                 </select>
             </div>
             <div class="col">
-                <input type="text" name="per_page" class="form-control" placeholder="Per Page">
+                <input type="text" name="per_page" class="form-control" placeholder="Per Page" value="{{isset($filter->per_page)?$filter->per_page: null }}">
             </div>
             <div class="col">
                 <button class="btn btn-info">Search</button>
@@ -33,6 +32,13 @@
         </div>
         <div class="row">
             @foreach($subjects as $subject)
+                @php
+                    if (isset($filter->{'avg' . $subject->id})) {
+                        $parameters = explode('-', $filter->{'avg'.$subject->id});
+                    } else {
+                        $parameters = [0, 5];
+                    }
+                @endphp
                 <script>
                     jQuery.noConflict();
                     jQuery( function($) {
@@ -40,7 +46,7 @@
                             range: true,
                             min: 0,
                             max: 5,
-                            values: [0, 5],
+                            values: ["<? echo $parameters[0] ?>", "<? echo $parameters[1] ?>"],
                             step: 0.1,
                             slide: function( event, ui ) {
                                 $( "#avg{{$subject->id}}" ).val( ui.values[ 0 ] + "-" + ui.values[ 1 ] );
@@ -95,5 +101,5 @@
         @endforeach
         </tbody>
     </table>
-    {{$paginatedCollection->links()}}
+    {{$paginatedCollection->render()}}
 @endsection

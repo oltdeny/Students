@@ -21,13 +21,8 @@ class SubjectController extends Controller
 
     public function create()
     {
-        $user = Auth::user();
-        if ($user->can('authorize', Subject::class)) {
-            return view('subjects/create');
-        } else {
-            $message = "you don't have permission";
-            return redirect()->back()->with('message', $message);
-        }
+        $this->authorize('create', Subject::class);
+        return view('subjects/create');
     }
 
 
@@ -41,13 +36,8 @@ class SubjectController extends Controller
 
     public function destroy(Subject $subject)
     {
-        $user = Auth::user();
-        if ($user->can('authorize', Subject::class)) {
-            $subject->delete();
-            return redirect()->route('subjects.index');
-        } else {
-            $message = "you don't have permission";
-            return redirect()->back()->with('message', $message);
-        }
+        $this->authorize('delete', $subject);
+        $subject->delete();
+        return redirect()->route('subjects.index');
     }
 }
