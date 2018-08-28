@@ -28,35 +28,34 @@ class HomeController extends Controller
     {
         $groups = Group::all();
         $subjects = Subject::all();
-        session_start();
-        foreach ($request->request as $key => $parameter) {
-            $_SESSION[$key] = $parameter;
-        }
-        if (isset($request->reset)) {
-            $_SESSION = [];
-        }
-        $filter = (object)$_SESSION;
         $page = request()->get('page');
-        $students = Student::filter($filter)->get();
+        $students = Student::filter($request)->get();
         $students->load('group', 'marks');
         $total = $students->count();
-        if (isset($filter->per_page)) {
-            $perPage = $filter->per_page > 0 ? $filter->per_page : 5;
-        } else {
-            $perPage = $request->per_page > 0 ? $request->per_page : 5;
-        }
+        $perPage = $request->per_page > 0 ? $request->per_page : 5;
         $paginatedCollection = new LengthAwarePaginator($students, $total, $perPage, $page);
         if ($page < 1) {
             $students = $paginatedCollection->slice(0, $perPage);
         } else {
             $students = $paginatedCollection->slice(($page-1)*$perPage, $perPage);
         }
+        $paginatedCollection
+            ->appends(['name' => isset($request->name)?$request->name: null])
+            ->appends(['surname' => isset($request->surname)?$request->surname: null])
+            ->appends(['patronymic' => isset($request->patronymic)?$request->patronymic: null])
+            ->appends(['per_page' => isset($request->per_page)?$request->per_page: null])
+            ->appends(['group_id' => isset($request->group_id)?$request->group_id: null]);
+        foreach ($subjects as $subject) {
+            $paginatedCollection->appends([
+                'avg'.$subject->id => isset($request->{'avg'.$subject->id})?$request->{'avg'.$subject->id}: null
+            ]);
+        }
         return view('home', [
-            'filter' => $filter,
+            'request' => $request,
             'groups' => $groups,
             'students' => $students,
             'paginatedCollection' => $paginatedCollection,
-            'subjects' => $subjects
+            'subjects' => $subjects,
         ]);
     }
 }

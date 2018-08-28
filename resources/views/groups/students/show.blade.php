@@ -3,7 +3,6 @@
     @can('create', \App\Models\Mark::class)
         <div style="display: inline-block">
             <form action="{{route('groups.students.marks.create', [$group, $student])}}" method="get">
-                @csrf
                 <button class="btn btn-success">Add Mark</button>
             </form>
         </div>
@@ -11,7 +10,6 @@
     @can('update', $student)
         <div style="display: inline-block">
             <form action="{{route('groups.students.edit', [$group, $student])}}" method="get">
-                @csrf
                 <button class="btn btn-info">Edit current Student</button>
             </form>
         </div>

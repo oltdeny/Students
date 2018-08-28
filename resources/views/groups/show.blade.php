@@ -4,7 +4,6 @@
     @can('create', \App\Models\Student::class)
         <div style="display: inline-block">
             <form action="{{route('groups.students.create', $group)}}" method="get">
-                @csrf
                 <div class="col-sm-6">
                     <button type="submit" class="btn btn-success">
                         Add student
@@ -16,7 +15,6 @@
     @can('update', $group)
         <div style="display: inline-block">
             <form action="{{route('groups.edit', $group)}}" method="get">
-                @csrf
                 <button class="btn btn-info">Edit current Group</button>
             </form>
         </div>

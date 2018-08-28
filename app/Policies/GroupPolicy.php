@@ -12,9 +12,7 @@ class GroupPolicy
 
     public function before($user)
     {
-        if ($user->is_admin) {
-            return true;
-        }
+        return $this->isAdmin($user);
     }
 
     public function create(User $user)
@@ -30,5 +28,10 @@ class GroupPolicy
     public function update(User $user, Group $group)
     {
         return false;
+    }
+
+    public function isAdmin($user): Bool
+    {
+        return $user->is_admin;
     }
 }

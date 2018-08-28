@@ -12,10 +12,7 @@ class StudentPolicy
 
     public function before($user)
     {
-        if ($user->is_admin) {
-            return true;
-        }
-        return false;
+        return $this->isAdmin($user);
     }
 
     public function create(User $user)
@@ -41,5 +38,10 @@ class StudentPolicy
     public function addPhoto(Student $student)
     {
         return false;
+    }
+
+    public function isAdmin($user): Bool
+    {
+        return $user->is_admin;
     }
 }

@@ -4,19 +4,19 @@
         <label for="name">Search student by:</label>
         <div class="row">
             <div class="col">
-                <input type="text" name="name" id="name" class="form-control" placeholder="name" value="{{isset($filter->name)?$filter->name: null }}">
+                <input type="text" name="name" id="name" class="form-control" placeholder="name" value="{{isset($request->name)?$request->name: null }}">
             </div>
             <div class="col">
-                <input type="text" name="surname"class="form-control" placeholder="surname" value="{{isset($filter->surname)?$filter->surname: null }}">
+                <input type="text" name="surname"class="form-control" placeholder="surname" value="{{isset($request->surname)?$request->surname: null }}">
             </div>
             <div class="col">
-                <input type="text" name="patronymic" class="form-control" placeholder="patronymic" value="{{isset($filter->patronymic)?$filter->patronymic: null }}">
+                <input type="text" name="patronymic" class="form-control" placeholder="patronymic" value="{{isset($request->patronymic)?$request->patronymic: null }}">
             </div>
             <div class="col">
                 <select title="Group" class="custom-select" name="group_id">
-                    <option disabled selected>Group:</option>
+                    <option selected value="">Group:</option>
                     @foreach($groups as $group)
-                        @if (isset($filter->group_id) && $group->id == $filter->group_id)
+                        @if (isset($request->group_id) && $group->id == $request->group_id)
                             <option selected value="{{$group->id}}">Group {{$group->name}}</option>
                         @else
                             <option value="{{$group->id}}">Group {{$group->name}}</option>
@@ -25,20 +25,20 @@
                 </select>
             </div>
             <div class="col">
-                <input type="text" name="per_page" class="form-control" placeholder="Per Page" value="{{isset($filter->per_page)?$filter->per_page: null }}">
+                <input type="text" name="per_page" class="form-control" placeholder="Per Page" value="{{isset($request->per_page)?$request->per_page: null }}">
             </div>
             <div class="col">
                 <button class="btn btn-info">Search</button>
             </div>
             <div class="col">
-                <input type="submit" name="reset" class="btn btn-info" value="Reset filters">
+                <a href="{{url('/')}}" name="reset" class="btn btn-info">Reset filters</a>
             </div>
         </div>
         <div class="row">
             @foreach($subjects as $subject)
                 @php
-                    if (isset($filter->{'avg' . $subject->id})) {
-                        $parameters = explode('-', $filter->{'avg'.$subject->id});
+                    if (isset($request->{'avg' . $subject->id})) {
+                        $parameters = explode('-', $request->{'avg'.$subject->id});
                     } else {
                         $parameters = [0, 5];
                     }
@@ -61,8 +61,8 @@
                 <div class="col">
                     <p>
                         <label for="avg{{$subject->id}}">Average mark for {{$subject->name}}</label>
-                        @if(isset($filter->{'avg' . $subject->id}))
-                            <input type="text" id="avg{{$subject->id}}" name="avg{{$subject->id}}" value="@php echo $filter->{'avg'.$subject->id}; @endphp" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                        @if(isset($request->{'avg' . $subject->id}))
+                            <input type="text" id="avg{{$subject->id}}" name="avg{{$subject->id}}" value="@php echo $request->{'avg'.$subject->id}; @endphp" readonly style="border:0; color:#f6931f; font-weight:bold;">
                         @else
                             <input type="text" id="avg{{$subject->id}}" name="avg{{$subject->id}}" readonly style="border:0; color:#f6931f; font-weight:bold;">
                         @endif

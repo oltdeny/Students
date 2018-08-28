@@ -3,7 +3,6 @@
     @can('create', \App\Models\Group::class)
         <div>
             <form action="{{route('groups.create')}}" method="get">
-                @csrf
                 <div class="col-sm-6">
                     <button type="submit" class="btn btn-success">
                         Add group

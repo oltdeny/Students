@@ -3,7 +3,6 @@
     @can('create', \App\Models\Subject::class)
         <div>
             <form action="{{route('subjects.create')}}" method="get">
-                @csrf
                 <button class="btn btn-success">Add Subject</button>
             </form>
         </div>

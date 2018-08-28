@@ -12,10 +12,7 @@ class MarkPolicy
 
     public function before($user)
     {
-        if ($user->is_admin) {
-            return true;
-        }
-        return false;
+        return $this->isAdmin($user);
     }
 
     public function create(User $user)
@@ -26,5 +23,10 @@ class MarkPolicy
     public function update(User $user, Mark $mark)
     {
         return false;
+    }
+
+    public function isAdmin($user): Bool
+    {
+        return $user->is_admin;
     }
 }
