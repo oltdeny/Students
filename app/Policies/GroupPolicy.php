@@ -22,12 +22,12 @@ class GroupPolicy
         return false;
     }
 
-    public function delete(Group $group)
+    public function delete(User $user, Group $group)
     {
         return false;
     }
 
-    public function update()
+    public function update(User $user, Group $group)
     {
         return false;
     }

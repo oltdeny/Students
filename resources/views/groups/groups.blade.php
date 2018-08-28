@@ -28,13 +28,13 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($groups as $group)
+        @foreach($avgs as $avg)
             <tr>
                 <td class="table-text">
-                    <div><a href="{{route('groups.show', $group)}}">{{$group->name}}</a></div>
+                    <div><a href="{{route('groups.show', $avg)}}">{{$avg->name}}</a></div>
                 </td>
                 <td class="table-text">
-                    <div>{{$group->description}}</div>
+                    <div>{{$avg->description}}</div>
                 </td>
                 <td>
                     <table class="table table-bordered table-sm">
@@ -43,20 +43,20 @@
                                 <th scope="row">{{$subject->name}}:</th>
                                 <td>
                                     @php
-                                        echo $avgs[$loop->parent->index]->{$subject->id}
+                                        echo $avg->{$subject->id}
                                     @endphp
                                 </td>
                             </tr>
                         @endforeach
                             <tr>
                                 <th scope="row">General Average:</th>
-                                <td>{{$avgs[$loop->index]->avg}}</td>
+                                <td>{{$avg->avg}}</td>
                             </tr>
                     </table>
                 </td>
                 <td>
-                    @can('delete', $group)
-                        <form action="{{route('groups.destroy', $group)}}" method="post">
+                    @can('delete', $avg)
+                        <form action="{{route('groups.destroy', $avg)}}" method="post">
                             @csrf
                             {{method_field('DELETE')}}
                             <button class="btn btn-danger">Delete current Group</button>
@@ -66,7 +66,7 @@
             </tr>
         @endforeach
     </table>
-    {{$groups->links()}}
+    {{$avgs->links()}}
 
 @endsection
 

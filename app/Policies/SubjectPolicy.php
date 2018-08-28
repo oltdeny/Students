@@ -18,12 +18,12 @@ class SubjectPolicy
         return false;
     }
 
-    public function create()
+    public function create(User $user)
     {
         return false;
     }
 
-    public function delete()
+    public function delete(User $user, Subject $subject)
     {
         return false;
     }

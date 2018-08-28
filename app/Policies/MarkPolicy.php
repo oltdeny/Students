@@ -18,12 +18,12 @@ class MarkPolicy
         return false;
     }
 
-    public function create()
+    public function create(User $user)
     {
         return false;
     }
 
-    public function update()
+    public function update(User $user, Mark $mark)
     {
         return false;
     }

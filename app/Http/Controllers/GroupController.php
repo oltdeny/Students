@@ -18,25 +18,10 @@ class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::paginate(1);
-        $marks = (new Mark)->getTable();
         $subjects = Subject::all();
-        $query = Group::select('groups.*');
-        foreach ($subjects as $subject) {
-            $subQuery = Mark::selectRaw("AVG({$marks}.mark) as mark")
-                ->whereRaw("{$marks}.group_id = groups.id")
-                ->where("{$marks}.subject_id", $subject->id);
-            $query->selectSub($subQuery, $subject->id);
-        }
-        $subQueryAvg = Mark::selectRaw("AVG({$marks}.mark) as mark")
-            ->whereRaw("{$marks}.group_id = groups.id");
-        $query->selectSub($subQueryAvg, "avg");
-        $avgs = $query->paginate(1);
-
+        $avgs = Group::avg($subjects)->paginate(1);
         return view('groups/groups', [
-            'groups' => $groups,
             'subjects' => $subjects,
-            'marks' => $marks,
             'avgs' => $avgs,
         ]);
     }

@@ -16,7 +16,11 @@
                 <select title="Group" class="custom-select" name="group_id">
                     <option disabled selected>Group:</option>
                     @foreach($groups as $group)
-                        <option value="{{$group->id}}">Group {{$group->name}}</option>
+                        @if (isset($filter->group_id) && $group->id == $filter->group_id)
+                            <option selected value="{{$group->id}}">Group {{$group->name}}</option>
+                        @else
+                            <option value="{{$group->id}}">Group {{$group->name}}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>

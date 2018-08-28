@@ -24,25 +24,25 @@ class Student extends Model
         return $this->hasMany(Mark::class);
     }
 
-    public function scopeFilter($query, $request)
+    public function scopeFilter($query, $filter)
     {
-        if (isset($request->surname)) {
-            $query->where('surname', $request->surname);
+        if (isset($filter->surname)) {
+            $query->where('surname', $filter->surname);
         }
-        if (isset($request->name)) {
-            $query->where('name', $request->name);
+        if (isset($filter->name)) {
+            $query->where('name', $filter->name);
         }
-        if (isset($request->patronymic)) {
-            $query->where('patronymic', $request->patronymic);
+        if (isset($filter->patronymic)) {
+            $query->where('patronymic', $filter->patronymic);
         }
-        if (isset($request->group_id)) {
-            $query->where('group_id', $request->group_id);
+        if (isset($filter->group_id)) {
+            $query->where('group_id', $filter->group_id);
         }
         $subjects = Subject::all();
         $query->select('students.*');
         foreach ($subjects as $subject) {
-            if (isset($request->{'avg' . $subject->id})) {
-                $parameters = explode('-', $request->{'avg' . $subject->id});
+            if (isset($filter->{'avg' . $subject->id})) {
+                $parameters = explode('-', $filter->{'avg' . $subject->id});
                 $subQuery = Mark::selectRaw("AVG(marks.mark)")
                     ->whereRaw("marks.student_id = students.id")
                     ->where("marks.subject_id", $subject->id);
