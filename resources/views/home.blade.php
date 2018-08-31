@@ -81,31 +81,35 @@
                     } else {
                         $parameters = [0, 5];
                     }
+                    $parameters['id'] = $subject->id;
+                    $parameters['name'] = $subject->name;
                 @endphp
-                <script>
-                    jQuery.noConflict();
-                    jQuery( function($) {
-                        $( "#slider{{$subject->id}}" ).slider({
-                            range: true,
-                            min: 0,
-                            max: 5,
-                            values: ["<? echo $parameters[0] ?>", "<? echo $parameters[1] ?>"],
-                            step: 0.1,
-                            slide: function( event, ui ) {
-                                $( "#avg{{$subject->id}}" ).val( ui.values[ 0 ] + "-" + ui.values[ 1 ] );
-                            }
-                        });
-                    } );
-                </script>
-                <div class="col">
-                    <label for="avg{{$subject->id}}">Average mark for {{$subject->name}}</label>
-                    @if(isset($request->{'avg' . $subject->id}))
-                        <input type="text" id="avg{{$subject->id}}" name="avg{{$subject->id}}" value="@php echo $request->{'avg'.$subject->id}; @endphp" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                    @else
-                        <input type="text" id="avg{{$subject->id}}" name="avg{{$subject->id}}" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                    @endif
-                    <div id="slider{{$subject->id}}"></div>
-                </div>
+
+                <slider-component :parameters="{{json_encode($parameters)}}"></slider-component>
+                {{--<script>--}}
+                    {{--jQuery.noConflict();--}}
+                    {{--jQuery( function($) {--}}
+                        {{--$( "#slider{{$subject->id}}" ).slider({--}}
+                            {{--range: true,--}}
+                            {{--min: 0,--}}
+                            {{--max: 5,--}}
+                            {{--values: ["<? echo $parameters[0] ?>", "<? echo $parameters[1] ?>"],--}}
+                            {{--step: 0.1,--}}
+                            {{--slide: function( event, ui ) {--}}
+                                {{--$( "#avg{{$subject->id}}" ).val( ui.values[ 0 ] + "-" + ui.values[ 1 ] );--}}
+                            {{--}--}}
+                        {{--});--}}
+                    {{--} );--}}
+                {{--</script>--}}
+                {{--<div class="col">--}}
+                    {{--<label for="avg{{$subject->id}}">Average mark for {{$subject->name}}</label>--}}
+                    {{--@if(isset($request->{'avg' . $subject->id}))--}}
+                        {{--<input type="text" id="avg{{$subject->id}}" name="avg{{$subject->id}}" value="@php echo $request->{'avg'.$subject->id}; @endphp" readonly style="border:0; color:#f6931f; font-weight:bold;">--}}
+                    {{--@else--}}
+                        {{--<input type="text" id="avg{{$subject->id}}" name="avg{{$subject->id}}" readonly style="border:0; color:#f6931f; font-weight:bold;">--}}
+                    {{--@endif--}}
+                    {{--<div id="slider{{$subject->id}}"></div>--}}
+                {{--</div>--}}
             @endforeach
         </div>
     </form>
