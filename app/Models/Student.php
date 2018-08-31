@@ -14,6 +14,10 @@ class Student extends Model
         'birth_date',
     ];
 
+    protected $casts = [
+        'birth_date' => 'date',
+    ];
+
     public function group()
     {
         return $this->belongsTo(Group::class);

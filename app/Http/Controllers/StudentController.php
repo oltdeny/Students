@@ -11,8 +11,8 @@ use App\Models\Group;
 use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 use Symfony\Component\HttpFoundation\File\File;
-use Image;
 
 class StudentController extends Controller
 {

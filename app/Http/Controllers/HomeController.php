@@ -34,21 +34,26 @@ class HomeController extends Controller
         $total = $students->count();
         $perPage = $request->per_page > 0 ? $request->per_page : 5;
         $paginatedCollection = new LengthAwarePaginator($students, $total, $perPage, $page);
-        if ($page < 1) {
-            $students = $paginatedCollection->slice(0, $perPage);
-        } else {
-            $students = $paginatedCollection->slice(($page-1)*$perPage, $perPage);
-        }
         $paginatedCollection
             ->appends(['name' => isset($request->name)?$request->name: null])
             ->appends(['surname' => isset($request->surname)?$request->surname: null])
             ->appends(['patronymic' => isset($request->patronymic)?$request->patronymic: null])
             ->appends(['per_page' => isset($request->per_page)?$request->per_page: null])
-            ->appends(['group_id' => isset($request->group_id)?$request->group_id: null]);
+            ->appends(['group_id' => isset($request->group_id)?$request->group_id: null])
+            ->appends(['sort' => isset($request->sort)?$request->sort: null]);
         foreach ($subjects as $subject) {
             $paginatedCollection->appends([
                 'avg'.$subject->id => isset($request->{'avg'.$subject->id})?$request->{'avg'.$subject->id}: null
             ]);
+        }
+        $sorted = $paginatedCollection;
+        if (isset($request->sort)) {
+            $sorted = $paginatedCollection->sortBy($request->sort);
+        }
+        if ($page < 1) {
+            $students = $sorted->slice(0, $perPage);
+        } else {
+            $students = $sorted->slice(($page-1)*$perPage, $perPage);
         }
         return view('home', [
             'request' => $request,

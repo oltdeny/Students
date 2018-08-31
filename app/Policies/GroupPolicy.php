@@ -34,4 +34,5 @@ class GroupPolicy
     {
         return $user->is_admin;
     }
+
 }
