@@ -1,8 +1,47 @@
 @extends('layouts.app')
 @section('content')
     <form action="" method="get">
-        <label for="name">Search student by:</label>
         <div class="row">
+            <div class="col">Sort by:</div>
+            <div class="col">
+                <label>
+                    @if ($request->sort == 'name')
+                        <input type="radio" name="sort" value="name" checked> Name
+                    @else
+                        <input type="radio" name="sort" value="name"> Name
+                    @endif
+                </label>
+            </div>
+            <div class="col">
+                <label>
+                    @if ($request->sort == 'surname')
+                        <input type="radio" name="sort" value="surname" checked> Surname
+                    @else
+                        <input type="radio" name="sort" value="surname"> Surname
+                    @endif
+                </label>
+            </div>
+            <div class="col">
+                <label>
+                    @if ($request->sort == 'patronymic')
+                        <input type="radio" name="sort" value="patronymic" checked> Patronymic
+                    @else
+                        <input type="radio" name="sort" value="patronymic"> Patronymic
+                    @endif
+                </label>
+            </div>
+            <div class="col">
+                <label>
+                    @if ($request->sort == 'birth_date')
+                        <input type="radio" name="sort" value="birth_date" checked> Birth Date
+                    @else
+                        <input type="radio" name="sort" value="birth_date"> Birth Date
+                    @endif
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">Search student by:</div>
             <div class="col">
                 <input type="text" name="name" id="name" class="form-control" placeholder="name" value="{{isset($request->name)?$request->name: null }}">
             </div>
