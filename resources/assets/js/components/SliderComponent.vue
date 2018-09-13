@@ -6,26 +6,39 @@
     </div>
 </template>
 <script>
-    jQuery.noConflict();
+    var slider = document.getElementById('slider'+id);
+    noUiSlider.create(slider, {
+        start: [min, max],
+        connect: true,
+        range: {
+            'min': min,
+            'max': max
+        },
+        step: 0.1
+    });
     export default {
         props: [
             'parameters'
         ],
         methods: {
             customSlider: function () {
-                console.log(this.parameters.name);
-                jQuery( function($) {
-                    $( "#slider" + this.parameters.name).slider({
-                        range: true,
-                        min: 0,
-                        max: 5,
-                        values: [this.parameters.min, this.parameters.max],
-                        step: 0.1,
-                        slide: function( event, ui ) {
-                            $( "#avg" + this.parameters.id).val( ui.values[ 0 ] + "-" + ui.values[ 1 ] );
-                        }
-                    });
-                } );
+                // jQuery.noConflict();
+                var min = this.parameters.min;
+                var max = this.parameters.max;
+                var id = this.parameters.id;
+                // jQuery( function($) {
+                //     $( "#slider" + name).slider({
+                //         range: true,
+                //         min: 0,
+                //         max: 5,
+                //         values: [min, max],
+                //         step: 0.1,
+                //         slide: function( event, ui ) {
+                //             $( "#avg" + id).val( ui.values[ 0 ] + "-" + ui.values[ 1 ] );
+                //         }
+                //     });
+                // } );
+
             }
         },
         mounted() {
