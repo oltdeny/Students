@@ -14,11 +14,18 @@
     "devDependencies": {
         "axios": "^0.18",
         "bootstrap": "^4.0.0",
-        "popper.js": "^1.12",
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^2.0",
         "lodash": "^4.17.4",
+        "popper.js": "^1.12",
         "vue": "^2.5.7"
+    },
+    "dependencies": {
+        "node-sass": "^4.9.3",
+        "nouislider": "^11.1.0",
+        "vue-nouislider-component": "0.0.5",
+        "vue-range-slider": "^0.6.0",
+        "vue-slider-component": "^2.7.7"
     }
 }

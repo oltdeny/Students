@@ -77,10 +77,11 @@
             @foreach($subjects as $subject)
                 @php
                     if (isset($request->{'avg' . $subject->id})) {
-                        $parameters = explode('-', $request->{'avg'.$subject->id});
+                        $temp = explode('-', $request->{'avg'.$subject->id});
                     } else {
-                        $parameters = [0, 5];
+                        $temp = [0, 5];
                     }
+                    list($parameters['min'], $parameters['max']) = $temp;
                     $parameters['id'] = $subject->id;
                     $parameters['name'] = $subject->name;
                 @endphp
