@@ -29,7 +29,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
-    <div id="app">
+    <div id="new">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{url('/')}}">Main</a>
@@ -80,9 +80,9 @@
                 </div>
             </div>
         </nav>
-    </div>
-    <div class="container">
-        @yield('content')
+        <div class="container">
+            @yield('content')
+        </div>
     </div>
 </body>
 </html>
